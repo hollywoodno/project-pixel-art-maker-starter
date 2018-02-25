@@ -1,10 +1,10 @@
-$(document).ready(function() {
+$(document).ready(function () {
     var w;
     var h;
     var buildCanvas = buildCanvas;
 
     /* Given a table element builds it of provided width and height. */
-    buildCanvas = function(selector, w, h) {
+    buildCanvas = function (selector, w, h) {
 
         console.log('height: ' + h + ' width ' + w);
 
@@ -15,18 +15,20 @@ $(document).ready(function() {
 
             for (var c = 0; c < w; c++) {
 
-                newRow += '<td>hello</td>';
+                newRow += '<td></td>';
             }
 
             newRow += '</tr>';
             selector.append(newRow);
+
+            console.log("A individual pixel dimension: (" + r + ", " + c + ")");
         }
 
     };
 
     /* Event Handler for user clicking submit canvas dimensions */
-    $('#canvas-grid').on('submit', function(evt) {
-
+    $('#canvas-dimensions').on('submit', function (evt) {
+        console.log("evt: ", evt);
         evt.preventDefault();
 
         var table = $('#pixel-canvas');
@@ -36,4 +38,6 @@ $(document).ready(function() {
         buildCanvas(table, w, h);
 
     });
+
+
 });
