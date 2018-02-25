@@ -40,7 +40,7 @@
                     </div>
                     <div class="btn-group" style="width: 50%;">
                         <button type="submit" style="width: 50%;" class="btn btn-default">Preview</button>
-                        <button type="reset" style="width: 50%;" class="btn btn-default">Reset</button>
+                        <button type="reset" id="reset" style="width: 50%;" class="btn btn-default">Reset</button>
                     </div>
                 </form>
 
@@ -68,6 +68,30 @@
 
         </div>
     </div>
+
+    <!--Confirm Reset Pixel Canvas Modal-->
+
+    <div class="modal fade" id="confirmStartOverModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Confirm Clear Canvas: </h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to start over? You will loose your pixel art.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="start-over" class="btn btn-primary">Start Over</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <script src="designs.js"></script>
 </body>
 </html>
