@@ -1,15 +1,14 @@
 $(document).ready(function () {
     var w;
     var h;
+    var color = '#000';
     var selector;
     var hideDesignArea = hideDesignArea;
     var buildPreview = buildPreview;
     var buildCanvas = buildCanvas;
 
-    /* Given a table element builds it of provided width and height. */
+    /* Given a table element, builds it from provided width and height. */
     buildPreview = function (selector, w, h) {
-
-        console.log('height: ' + h + ' width ' + w);
 
         for (var r = 0; r < h; r++) {
 
@@ -29,69 +28,102 @@ $(document).ready(function () {
 
     };
 
+    /* Displays or hides the design area */
     hideDesignArea = function (hide) {
         var designArea = $('.design-area');
 
         if (hide) {
-            designArea.css('margin-left', '-1000px');
+            designArea.hide();
         } else {
-            designArea.css('margin-left', '0');
+            designArea.show();
         }
     }
 
     /* Builds and displays pixel canvas fullscreen for editing */
-    buildCanvas = function() {
+    buildCanvas = function () {
         $('.preview-area').first().removeClass('col-md-8');
-        //$('.preview-area').find('.section-title').first().remove();
         $('.preview-area').find('.section-title').css('display', 'none');
+
         buildPreview(selector, w, h);
+
+        // This differeiante a preview canvas from the live canvas
+        $('#pixel-canvas').addClass('active');
         $('.preview-area').prepend('<br><button class="btn reset-canvas" id="start-over-button" data-toggle="modal" data-target="#confirmStartOverModal" style="width: 80%">Start Over</button>');
+
+        // May be best to move this to CSS file.
         $('body').css('cursor', 'cell');
     }
 
     /* Listeners */
 
-    /* Event Handler for user clicking submit canvas dimensions */
+    /* Builds a preview of pixel canvas. Event handler for when user submits canvas dimensions. */
     $('#canvas-dimensions').on('submit', function (evt) {
-        console.log("evt: ", evt);
         evt.preventDefault();
 
         var table = $('#pixel-canvas');
+        selector = table; // Store for building live pixel canvas
+
         w = $('#canvas-width').val();
         h = $('#canvas-height').val();
-        selector = table;
 
         buildPreview(table, w, h);
-
     });
 
+    /* Builds the live pixel canvas. */
     $('#build').on('click', function (v, h) {
+        // First remove any existing preview and go live fullscreen
         $('#pixel-canvas').empty();
-        console.log('Should build real grid');
         hideDesignArea(true);
+
         buildCanvas();
-
     });
 
-    $('.preview-area').on('click', '.reset-canvas', function () {
-        console.log('should show modal to confirm if clear canvas canvas');
+    /* Manages the color picker */
+    $('#color-picker').on('input', function () {
+        console.log('color picker choose: ', $('#color-picker').val());
+        color = $('#color-picker').val();
     });
 
+    /* Resets the live canvas and returns user to initial design state */
     $('#start-over').on('click', function () {
-        console.log('confirmation given to reset canvas');
         $('#confirmStartOverModal').modal('hide');
+
+        // Ckear the pixel canvas table of it's cells
         $('#pixel-canvas').empty();
 
-        //$('.preview-area').find('.section-title').first().remove();
-
+        // Reset preview area
         $('.preview-area').find('.section-title').css('display', 'initial');
         $('.preview-area').first().addClass('col-md-8');
         $('#start-over-button').remove();
+
         hideDesignArea(false);
+
         $('#reset').trigger("click");
     });
 
+    /* Resets preview and live pixel canvas when reset button is clicked*/
     $('body').on('click', '#reset', function () {
+        w = undefined;
+        h = undefined;
+        selector = undefined;
+        color = '#000';
+
         $('#pixel-canvas').empty();
+    });
+
+    /* Colors pixels by listening for cell activity when pixel canvas is set to active */
+
+    // Listen for the cell that is being tapped
+    $('body').on('click', '.active td', function (evt) {
+        var target = $(evt.target);
+
+        // Keep track of colored/uncolored pixels by presence of 'colored' class
+        if (target.hasClass('colored')) {
+            target.css('background-color', '#FFF');
+            target.removeClass('colored');
+        } else {
+            target.css('background-color', color);
+            target.addClass('colored');
+        }
     });
 });
