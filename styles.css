@@ -56,7 +56,7 @@ td {
     text-shadow: 1px 1px 1px #999;
 }
 
-#build {
+#build, button {
     background-color: salmon;
     color: white;
 }

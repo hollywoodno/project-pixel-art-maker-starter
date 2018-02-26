@@ -2,14 +2,14 @@ $(document).ready(function () {
     var w;
     var h;
     var color = '#000';
-    var selector;
+    var selector = $('#pixel-canvas');
     var hideDesignArea = hideDesignArea;
     var buildPreview = buildPreview;
     var buildCanvas = buildCanvas;
+    var enableCanvasBuild = enableCanvasBuild;
 
     /* Given a table element, builds it from provided width and height. */
     buildPreview = function (selector, w, h) {
-
         for (var r = 0; r < h; r++) {
 
             // Initialize the row
@@ -44,15 +44,32 @@ $(document).ready(function () {
         $('.preview-area').first().removeClass('col-md-8');
         $('.preview-area').find('.section-title').css('display', 'none');
 
-        buildPreview(selector, w, h);
+        //var table = $('#pixel-canvas');
+        //selector = table; // Store for building live pixel canvas
 
         // This differeiante a preview canvas from the live canvas
         $('#pixel-canvas').addClass('active');
+        w = $('#canvas-width').val();
+        h = $('#canvas-height').val();
+
+        buildPreview($('#pixel-canvas'), w, h);
         $('.preview-area').prepend('<br><button class="btn reset-canvas" id="start-over-button" data-toggle="modal" data-target="#confirmStartOverModal" style="width: 80%">Start Over</button>');
 
         // May be best to move this to CSS file.
         $('body').css('cursor', 'cell');
     }
+
+    enableCanvasBuild = function() {
+        if (w && h) {
+            console.log('enable live build');
+            $('#preview').removeAttr('disabled');
+            $('#build').removeAttr('disabled');
+        } else {
+            console.log('disable live build');
+            $('#preview').attr('disabled', true);
+            $('#build').attr('disabled', true);
+        }
+    };
 
     /* Listeners */
 
@@ -106,13 +123,14 @@ $(document).ready(function () {
         w = undefined;
         h = undefined;
         selector = undefined;
+        $('#pixel-canvas').removeClass('active');
         color = '#000';
-
+        $('#color-picker').val('#000');
+        enableCanvasBuild();
         $('#pixel-canvas').empty();
     });
 
     /* Colors pixels by listening for cell activity when pixel canvas is set to active */
-
     // Listen for the cell that is being tapped
     $('body').on('click', '.active td', function (evt) {
         var target = $(evt.target);
@@ -126,4 +144,21 @@ $(document).ready(function () {
             target.addClass('colored');
         }
     });
+
+    /* Updates width of canvas based on user input changes */
+    $('#canvas-width').on('input', function (evt) {
+        var target = $(evt.target);
+        w = target.val();
+
+        enableCanvasBuild();
+    });
+
+    /* Updates height of canvas based on user input changes */
+    $('#canvas-height').on('input', function (evt) {
+        var target = $(evt.target);
+        h = target.val();
+
+        enableCanvasBuild();
+    });
+
 });
