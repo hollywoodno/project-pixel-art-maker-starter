@@ -8,8 +8,13 @@ $(document).ready(function () {
     var buildCanvas = buildCanvas;
     var enableCanvasBuild = enableCanvasBuild;
 
+    // Previewing pixel canvas
+    var colorPixels = colorPixels;
+    var start = 1;
+    var end = 5;
+
     /* Given a table element, builds it from provided width and height. */
-    buildPreview = function (selector, w, h) {
+    buildPreview = function (selector, w, h, pixelColoring) {
         for (var r = 0; r < h; r++) {
 
             // Initialize the row
@@ -24,6 +29,11 @@ $(document).ready(function () {
             selector.append(newRow);
 
             console.log("A individual pixel dimension: (" + r + ", " + c + ")");
+        }
+
+        //Used for preview of coloring pixels
+        if (pixelColoring) {
+            colorPixels();
         }
 
     };
@@ -59,7 +69,7 @@ $(document).ready(function () {
         $('body').css('cursor', 'cell');
     }
 
-    enableCanvasBuild = function() {
+    enableCanvasBuild = function () {
         if (w && h) {
             console.log('enable live build');
             $('#preview').removeAttr('disabled');
@@ -70,6 +80,26 @@ $(document).ready(function () {
             $('#build').attr('disabled', true);
         }
     };
+
+    /* Color pixels by generating a random index from a list of table cells */
+    colorPixels = function () {
+        var cells = selector.find('td');
+
+        var randomIndices = setInterval(function () {
+
+            var index = Math.floor((Math.random() * cells.length) + 1);
+
+            if (!(start < end)) {
+                clearInterval(randomIndices); // If I want to keep coloring cells remove this
+                start = 1
+            }
+
+            $(cells[index]).css('background-color', color);
+
+            start++;
+        }, 1000);
+
+    }
 
     /* Listeners */
 
@@ -83,7 +113,7 @@ $(document).ready(function () {
         w = $('#canvas-width').val();
         h = $('#canvas-height').val();
 
-        buildPreview(table, w, h);
+        buildPreview(table, w, h, true);
     });
 
     /* Builds the live pixel canvas. */
