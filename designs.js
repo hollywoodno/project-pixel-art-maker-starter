@@ -14,7 +14,7 @@ $(document).ready(function () {
     var end = 5;
 
     /* Given a table element, builds it from provided width and height. */
-    buildPreview = function (selector, w, h, pixelColoring) {
+    buildPreview = function buildPreview(selector, w, h, pixelColoring) {
         for (var r = 0; r < h; r++) {
 
             // Initialize the row
@@ -39,7 +39,7 @@ $(document).ready(function () {
     };
 
     /* Displays or hides the design area */
-    hideDesignArea = function (hide) {
+    hideDesignArea = function hideDesignArea(hide) {
         var designArea = $('.design-area');
 
         if (hide) {
@@ -50,7 +50,7 @@ $(document).ready(function () {
     }
 
     /* Builds and displays pixel canvas fullscreen for editing */
-    buildCanvas = function () {
+    buildCanvas = function buildCanvas() {
         $('.preview-area').first().removeClass('col-md-8');
         $('.preview-area').find('.section-title').css('display', 'none');
 
@@ -69,7 +69,7 @@ $(document).ready(function () {
         $('body').css('cursor', 'cell');
     }
 
-    enableCanvasBuild = function () {
+    enableCanvasBuild = function enableCanvasBuild() {
         if (w && h) {
             console.log('enable live build');
             $('#preview').removeAttr('disabled');
@@ -82,7 +82,7 @@ $(document).ready(function () {
     };
 
     /* Color pixels by generating a random index from a list of table cells */
-    colorPixels = function () {
+    colorPixels = function colorPixels() {
         var cells = selector.find('td');
 
         var randomIndices = setInterval(function () {
@@ -162,6 +162,7 @@ $(document).ready(function () {
         $('.dimension-control-group').removeAttr('disabled');
         $('#pixel-canvas').removeClass('active');
         $('#color-picker').val('#000');
+        $('body').css('cursor', 'unset');
 
         enableCanvasBuild();
 
