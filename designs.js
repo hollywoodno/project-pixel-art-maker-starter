@@ -10,7 +10,7 @@ $(document).ready(function () {
 
     // Previewing pixel canvas
     var colorPixels = colorPixels;
-    var start = 1;
+    var start = 0;
     var end = 5;
 
     /* Given a table element, builds it from provided width and height. */
@@ -87,7 +87,7 @@ $(document).ready(function () {
 
         var randomIndices = setInterval(function () {
 
-            var index = Math.floor((Math.random() * cells.length) + 1);
+            var index = cells.length == 1 ? 0 : Math.floor((Math.random() * cells.length) + 1);
 
             if (!(start < end)) {
                 clearInterval(randomIndices); // If I want to keep coloring cells remove this
@@ -106,6 +106,9 @@ $(document).ready(function () {
     /* Builds a preview of pixel canvas. Event handler for when user submits canvas dimensions. */
     $('#canvas-dimensions').on('submit', function (evt) {
         evt.preventDefault();
+
+        // Disable the preview and dimension buttons otherwise table will build on top of old tables
+        $('.dimension-control-group').attr('disabled', 'true');
 
         var table = $('#pixel-canvas');
         selector = table; // Store for building live pixel canvas
@@ -153,10 +156,15 @@ $(document).ready(function () {
         w = undefined;
         h = undefined;
         selector = undefined;
-        $('#pixel-canvas').removeClass('active');
         color = '#000';
+
+        // Update the view
+        $('.dimension-control-group').removeAttr('disabled');
+        $('#pixel-canvas').removeClass('active');
         $('#color-picker').val('#000');
+
         enableCanvasBuild();
+
         $('#pixel-canvas').empty();
     });
 
