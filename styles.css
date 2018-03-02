@@ -3,7 +3,7 @@
 }
 
 html, body {
-    background-color: cadetblue;
+    background-color: #21618C;
     color: #333;
 }
 
@@ -47,16 +47,17 @@ td {
 
 .main-title {
     text-shadow: -1px -1px 1px #333;
-    background-color: cadetblue;
+    background-color: #21618C;
     color: white;
     text-align: center;
 }
 
 .section-title {
-    text-shadow: 1px 1px 1px #999;
+    text-shadow: 1px 1px 1px #fff;
+    color: #333;
 }
 
 #build, button {
-    background-color: salmon;
+    background-color: #B03A2E;
     color: white;
 }
