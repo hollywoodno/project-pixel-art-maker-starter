@@ -1,36 +1,37 @@
 $(document).ready(function () {
-    var width;
-    var height;
-    var color = '#000';
-    var dragPixelColoring = false;
+    'use strict';
+
+    let width;
+    let height;
+    let color = '#000';
+    let dragPixelColoring = false;
 
     // Previewing pixel canvas
-    var colorPixels = colorPixels;
-    var start = 0;
-    var end = 5;
+    let start = 0;
+    let end = 5;
 
     // Selectors
-    var pixelCanvas = $('#pixel-canvas');
-    var designArea = $('.design-area');
-    var previewArea = $('.preview-area');
-    var canvasDimensions = $('#canvas-dimensions');
-    var canvasWidth = $('#canvas-width');
-    var canvasHeight = $('#canvas-height');
+    let pixelCanvas = $('#pixel-canvas');
+    let designArea = $('.design-area');
+    let previewArea = $('.preview-area');
+    let canvasDimensions = $('#canvas-dimensions');
+    let canvasWidth = $('#canvas-width');
+    let canvasHeight = $('#canvas-height');
 
-    // Functions
-    var hideDesignArea = hideDesignArea;
-    var buildPreview = buildPreview;
-    var buildCanvas = buildCanvas;
-    var enableCanvasBuild = enableCanvasBuild;
-
-    /* Given a table element, builds it from provided width and height. */
-    buildPreview = function (table, w, h, pixelColoring) {
-        for (var r = 0; r < h; r++) {
+// --------------------------------
+    /**
+    * @description Dynamically builds a table that represents pixel grid
+    * @param {number} w - The number of columns the table should have
+    * @param {number} h - The number of rows the table should have
+    * @param {boolean} pixelColoring - Whether to preview coloring cells
+    */
+    function buildPreview(table, w, h, pixelColoring) {
+        for (let r = 0; r < h; r++) {
 
             // Initialize the row
-            var newRow = '<tr>';
+            let newRow = '<tr>';
 
-            for (var c = 0; c < width; c++) {
+            for (let c = 0; c < width; c++) {
 
                 newRow += '<td></td>';
             }
@@ -44,36 +45,48 @@ $(document).ready(function () {
             colorPixels();
         }
 
-    };
+    }
 
-    /* Displays or hides the design area */
-    hideDesignArea = function (hide) {
+    /**
+    * @description Toogles the display of the design area for pixel canvas
+    * @param {boolean} hide - If true hides the display else displays it
+    */
+    function hideDesignArea(hide) {
         if (hide) {
             designArea.hide();
         } else {
             designArea.show();
         }
-    };
+    }
 
-    /* Builds and displays pixel canvas fullscreen for editing */
-    buildCanvas = function () {
+    /**
+    * @description Builds and displays pixel canvas fullscreen live coloring
+    * @param
+    */
+    function buildCanvas() {
         previewArea.first().removeClass('col-md-8');
         previewArea.find('.section-title').css('display', 'none');
 
         // This differentiate a preview canvas from the live canvas
         pixelCanvas.addClass('active');
-        w = canvasWidth.val();
-        h = canvasHeight.val();
+        width = canvasWidth.val();
+        height = canvasHeight.val();
 
-        buildPreview(pixelCanvas, w, h);
+        buildPreview(pixelCanvas, width, height);
 
-        previewArea.prepend('<br><button class="btn reset-canvas" id="start-over-button" data-toggle="modal" data-target="#confirmStartOverModal">Start Over</button>');
+        previewArea.prepend('<br><button class="btn reset-canvas" ' +
+            'id="start-over-button" data-toggle="modal" ' +
+            'data-target="#confirmStartOverModal">Start Over</button>');
 
         // May be best to move this to CSS file.
         $('body').css('cursor', 'cell');
-    };
+    }
 
-    enableCanvasBuild = function () {
+    /**
+    * @description Toggles ability to build a preview or live canvas
+    * @param
+    */
+    function enableCanvasBuild() {
         if (width && height) {
             $('#preview').removeAttr('disabled');
             $('#build').removeAttr('disabled');
@@ -81,15 +94,19 @@ $(document).ready(function () {
             $('#preview').attr('disabled', true);
             $('#build').attr('disabled', true);
         }
-    };
+    }
 
-    /* Color pixels by generating a random index from a list of table cells */
-    colorPixels = function()  {
-        var cells = pixelCanvas.find('td');
+    /**
+    * @description Color pixels by generating a random index from a list of table cells
+    * @param
+    */
+    function colorPixels() {
+        let cells = pixelCanvas.find('td');
 
-        var randomIndices = setInterval(function () {
+        let randomIndices = setInterval(function () {
 
-            var index = cells.length == 1 ? 0 : Math.floor((Math.random() * cells.length) + 1);
+            // Single cell just needs index 0
+            let index = cells.length == 1 ? 0 : Math.floor((Math.random() * cells.length) + 1);
 
             if (!(start < end)) {
                 clearInterval(randomIndices); // If I want to keep coloring cells remove this
@@ -101,43 +118,56 @@ $(document).ready(function () {
             start++;
         }, 1000);
 
-    };
+    }
 
     /* Listeners */
 
-    /* Builds a preview of pixel canvas. Event handler for when user submits canvas dimensions. */
+    /**
+    * @description Builds a preview of pixel canvas. Handler for when user submits canvas dimensions.
+    * @param {Event} - The object to which event was triggered
+    */
     canvasDimensions.on('submit', function (evt) {
         evt.preventDefault();
 
         // Disable the preview and dimension buttons otherwise table will build on top of old tables
         $('.dimension-control-group').attr('disabled', 'true');
 
-        w = canvasWidth.val();
-        h = canvasHeight.val();
+        width = canvasWidth.val();
+        height = canvasHeight.val();
 
-        buildPreview(pixelCanvas, w, h, true);
+        buildPreview(pixelCanvas, width, height, true);
     });
 
-    /* Builds the live pixel canvas. */
-    $('#build').on('click', function (v, h) {
-        // First remove any existing preview and go live fullscreen
+    /**
+    * @description Builds the live pixel canvas. Handler for when user submits canvas dimensions.
+    * @param
+    */
+    $('#build').on('click', function () {
+        // TODO: Animate the transition of hiding preview area and going live fullscreen
+
+        // First remove any existing preview then go live
         pixelCanvas.empty();
         hideDesignArea(true);
 
         buildCanvas();
     });
 
-    /* Manages the color picker */
+    /**
+    * @description Handler for updating the color from the color picker
+    * @param
+    */
     $('#color-picker').on('input', function () {
-        console.log('color picker choose: ', $('#color-picker').val());
         color = $('#color-picker').val();
     });
 
-    /* Resets the live canvas and returns user to initial design state */
+    /**
+    * @description Resets the live canvas and returns user to initial design state
+    * @param
+    */
     $('#start-over').on('click', function () {
         $('#confirmStartOverModal').modal('hide');
 
-        // Ckear the pixel canvas table of it's cells
+        // Clear the pixel canvas table of it's cells
         pixelCanvas.empty();
 
         // Reset preview area
@@ -147,10 +177,13 @@ $(document).ready(function () {
 
         hideDesignArea(false);
 
-        $('#reset').trigger("click");
+        $('#reset').trigger('click');
     });
 
-    /* Resets preview and live pixel canvas when reset button is clicked*/
+    /**
+    * @description Resets preview and live pixel canvas when reset button is clicked
+    * @param
+    */
     $('body').on('click', '#reset', function () {
         width = undefined;
         height = undefined;
@@ -163,18 +196,22 @@ $(document).ready(function () {
         $('body').css('cursor', 'unset');
 
         enableCanvasBuild();
-
         pixelCanvas.empty();
     });
 
-    /* Colors pixels by listening for cell activity when pixel canvas is set to active */
+    /**
+    * @description Colors pixels when canvas in active mode
+    * @param {Event} - The object to which event was triggered
+    */
     $('body').on('click', '.active td', function (evt) {
-        var target = $(evt.target);
+        // TODO: Remove this listener - move pixel coloring to onmousedown event
 
-      /* Important: We only want to color pixels on an original 'click' event not
+        let target = $(evt.target);
+
+        /* Important: We only want to color pixels on an original 'click' event not
          as an after effect of mousedown or any other event. Original click events
          will not have an originalEvent property.
-         */
+        */
         if (!evt.originalEvent) {
             // Keep track of colored/uncolored pixels by presence of 'colored' class
             if (target.hasClass('colored')) {
@@ -187,8 +224,12 @@ $(document).ready(function () {
         }
     });
 
-    /* Allows coloring of multiple pixels at once */
-    $('body').on("mousedown", '.active td', function (evt5) {
+    /**
+    * @description Allows coloring of multiple pixels with dragging
+    * @param {Event} - The object to which event was triggered
+    */
+    $('body').on('mousedown', '.active td', function (evt5) {
+    // TODO: This listener will have the coloring of pixels logic
 
         /* We color the cells by manually triggering their clicking */
         dragPixelColoring = true;
@@ -209,17 +250,23 @@ $(document).ready(function () {
         }
     });
 
-    /* Updates width of canvas based on user input changes */
+    /**
+    * @description Updates width of canvas based on user input changes
+    * @param {Event} - The object to which event was triggered
+    */
     canvasWidth.on('input', function (evt) {
-        var target = $(evt.target);
+        let target = $(evt.target);
         width = target.val();
 
         enableCanvasBuild();
     });
 
-    /* Updates height of canvas based on user input changes */
+    /**
+    * @description Updates height of canvas based on user input changes
+    * @param {Event} - The object to which event was triggered
+    */
     canvasHeight.on('input', function (evt) {
-        var target = $(evt.target);
+        let target = $(evt.target);
         height = target.val();
 
         enableCanvasBuild();
