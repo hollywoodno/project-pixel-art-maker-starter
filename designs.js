@@ -48,7 +48,7 @@ $(document).ready(function () {
         } else {
             designArea.show();
         }
-    }
+    };
 
     /* Builds and displays pixel canvas fullscreen for editing */
     buildCanvas = function () {
@@ -68,7 +68,7 @@ $(document).ready(function () {
 
         // May be best to move this to CSS file.
         $('body').css('cursor', 'cell');
-    }
+    };
 
     enableCanvasBuild = function () {
         if (w && h) {
@@ -83,7 +83,7 @@ $(document).ready(function () {
     };
 
     /* Color pixels by generating a random index from a list of table cells */
-  function colorPixels() {
+    colorPixels = function()  {
         var cells = selector.find('td');
 
         var randomIndices = setInterval(function () {
@@ -92,7 +92,7 @@ $(document).ready(function () {
 
             if (!(start < end)) {
                 clearInterval(randomIndices); // If I want to keep coloring cells remove this
-                start = 1
+                start = 1;
             }
 
             $(cells[index]).css('background-color', color);
@@ -100,7 +100,7 @@ $(document).ready(function () {
             start++;
         }, 1000);
 
-    }
+    };
 
     /* Listeners */
 
@@ -177,39 +177,39 @@ $(document).ready(function () {
       /* Important: We only want to color pixels on an original 'click' event not
          as an after effect of mousedown or any other event. Original click events
          will not have an originalEvent property.
-      */
-      if (!evt.originalEvent) {
-        // Keep track of colored/uncolored pixels by presence of 'colored' class
-        if (target.hasClass('colored')) {
-            target.css('background-color', '#FFF');
-            target.removeClass('colored');
-        } else {
-            target.css('background-color', color);
-            target.addClass('colored');
+         */
+        if (!evt.originalEvent) {
+            // Keep track of colored/uncolored pixels by presence of 'colored' class
+            if (target.hasClass('colored')) {
+                target.css('background-color', '#FFF');
+                target.removeClass('colored');
+            } else {
+                target.css('background-color', color);
+                target.addClass('colored');
+            }
         }
-      }
     });
 
-     /* Allows coloring of multiple pixels at once */
+    /* Allows coloring of multiple pixels at once */
     $('body').on("mousedown", '.active td', function (evt5) {
 
-      /* We color the cells by manually triggering their clicking */
-      dragPixelColoring = true;
-      $(evt5.target).trigger('click');
+        /* We color the cells by manually triggering their clicking */
+        dragPixelColoring = true;
+        $(evt5.target).trigger('click');
 
-      // As we enter new cells, color them
-      if (dragPixelColoring) {
-        $('.active td').on('mouseenter', function(evt2) {
-          $(evt2.target).trigger('click');
-        });
+        // As we enter new cells, color them
+        if (dragPixelColoring) {
+            $('.active td').on('mouseenter', function(evt2) {
+                $(evt2.target).trigger('click');
+            });
 
-        // Terminates the coloring of new cell, by by removing the listener
-        $('.active td').on('mouseup', function(evt3) {
-            //$(evt3.target).css('background-color', 'purple'); // Color last cell dragged to. Just a little extra magic
-            $('.active td').off('mouseenter');
-            dragPixelColoring = false;
-        });
-      }
+            // Terminates the coloring of new cell, by by removing the listener
+            $('.active td').on('mouseup', function(evt3) {
+                //$(evt3.target).css('background-color', 'purple'); // Color last cell dragged to. Just a little extra magic
+                $('.active td').off('mouseenter');
+                dragPixelColoring = false;
+            });
+        }
     });
 
     /* Updates width of canvas based on user input changes */
