@@ -1,38 +1,45 @@
 $(document).ready(function () {
-    var w;
-    var h;
+    var width;
+    var height;
     var color = '#000';
-    var selector = $('#pixel-canvas');
     var dragPixelColoring = false;
-    var hideDesignArea = hideDesignArea;
-    var buildPreview = buildPreview;
-    var buildCanvas = buildCanvas;
-    var enableCanvasBuild = enableCanvasBuild;
 
     // Previewing pixel canvas
     var colorPixels = colorPixels;
     var start = 0;
     var end = 5;
 
+    // Selectors
+    var pixelCanvas = $('#pixel-canvas');
+    var designArea = $('.design-area');
+    var previewArea = $('.preview-area');
+    var canvasDimensions = $('#canvas-dimensions');
+    var canvasWidth = $('#canvas-width');
+    var canvasHeight = $('#canvas-height');
+
+    // Functions
+    var hideDesignArea = hideDesignArea;
+    var buildPreview = buildPreview;
+    var buildCanvas = buildCanvas;
+    var enableCanvasBuild = enableCanvasBuild;
+
     /* Given a table element, builds it from provided width and height. */
-    buildPreview = function (selector, w, h, pixelColoring) {
+    buildPreview = function (table, w, h, pixelColoring) {
         for (var r = 0; r < h; r++) {
 
             // Initialize the row
             var newRow = '<tr>';
 
-            for (var c = 0; c < w; c++) {
+            for (var c = 0; c < width; c++) {
 
                 newRow += '<td></td>';
             }
 
             newRow += '</tr>';
-            selector.append(newRow);
-
-            console.log("A individual pixel dimension: (" + r + ", " + c + ")");
+            table.append(newRow);
         }
 
-        //Used for preview of coloring pixels
+        // Used to preview coloring of pixels
         if (pixelColoring) {
             colorPixels();
         }
@@ -41,8 +48,6 @@ $(document).ready(function () {
 
     /* Displays or hides the design area */
     hideDesignArea = function (hide) {
-        var designArea = $('.design-area');
-
         if (hide) {
             designArea.hide();
         } else {
@@ -52,31 +57,27 @@ $(document).ready(function () {
 
     /* Builds and displays pixel canvas fullscreen for editing */
     buildCanvas = function () {
-        $('.preview-area').first().removeClass('col-md-8');
-        $('.preview-area').find('.section-title').css('display', 'none');
+        previewArea.first().removeClass('col-md-8');
+        previewArea.find('.section-title').css('display', 'none');
 
-        //var table = $('#pixel-canvas');
-        //selector = table; // Store for building live pixel canvas
+        // This differentiate a preview canvas from the live canvas
+        pixelCanvas.addClass('active');
+        w = canvasWidth.val();
+        h = canvasHeight.val();
 
-        // This differeiante a preview canvas from the live canvas
-        $('#pixel-canvas').addClass('active');
-        w = $('#canvas-width').val();
-        h = $('#canvas-height').val();
+        buildPreview(pixelCanvas, w, h);
 
-        buildPreview($('#pixel-canvas'), w, h);
-        $('.preview-area').prepend('<br><button class="btn reset-canvas" id="start-over-button" data-toggle="modal" data-target="#confirmStartOverModal" style="width: 80%">Start Over</button>');
+        previewArea.prepend('<br><button class="btn reset-canvas" id="start-over-button" data-toggle="modal" data-target="#confirmStartOverModal" style="width: 80%">Start Over</button>');
 
         // May be best to move this to CSS file.
         $('body').css('cursor', 'cell');
     };
 
     enableCanvasBuild = function () {
-        if (w && h) {
-            console.log('enable live build');
+        if (width && height) {
             $('#preview').removeAttr('disabled');
             $('#build').removeAttr('disabled');
         } else {
-            console.log('disable live build');
             $('#preview').attr('disabled', true);
             $('#build').attr('disabled', true);
         }
@@ -84,7 +85,7 @@ $(document).ready(function () {
 
     /* Color pixels by generating a random index from a list of table cells */
     colorPixels = function()  {
-        var cells = selector.find('td');
+        var cells = pixelCanvas.find('td');
 
         var randomIndices = setInterval(function () {
 
@@ -105,25 +106,22 @@ $(document).ready(function () {
     /* Listeners */
 
     /* Builds a preview of pixel canvas. Event handler for when user submits canvas dimensions. */
-    $('#canvas-dimensions').on('submit', function (evt) {
+    canvasDimensions.on('submit', function (evt) {
         evt.preventDefault();
 
         // Disable the preview and dimension buttons otherwise table will build on top of old tables
         $('.dimension-control-group').attr('disabled', 'true');
 
-        var table = $('#pixel-canvas');
-        selector = table; // Store for building live pixel canvas
+        w = canvasWidth.val();
+        h = canvasHeight.val();
 
-        w = $('#canvas-width').val();
-        h = $('#canvas-height').val();
-
-        buildPreview(table, w, h, true);
+        buildPreview(pixelCanvas, w, h, true);
     });
 
     /* Builds the live pixel canvas. */
     $('#build').on('click', function (v, h) {
         // First remove any existing preview and go live fullscreen
-        $('#pixel-canvas').empty();
+        pixelCanvas.empty();
         hideDesignArea(true);
 
         buildCanvas();
@@ -140,11 +138,11 @@ $(document).ready(function () {
         $('#confirmStartOverModal').modal('hide');
 
         // Ckear the pixel canvas table of it's cells
-        $('#pixel-canvas').empty();
+        pixelCanvas.empty();
 
         // Reset preview area
-        $('.preview-area').find('.section-title').css('display', 'initial');
-        $('.preview-area').first().addClass('col-md-8');
+        previewArea.find('.section-title').css('display', 'initial');
+        previewArea.first().addClass('col-md-8');
         $('#start-over-button').remove();
 
         hideDesignArea(false);
@@ -154,20 +152,19 @@ $(document).ready(function () {
 
     /* Resets preview and live pixel canvas when reset button is clicked*/
     $('body').on('click', '#reset', function () {
-        w = undefined;
-        h = undefined;
-        selector = undefined;
+        width = undefined;
+        height = undefined;
         color = '#000';
 
         // Update the view
         $('.dimension-control-group').removeAttr('disabled');
-        $('#pixel-canvas').removeClass('active');
+        pixelCanvas.removeClass('active');
         $('#color-picker').val('#000');
         $('body').css('cursor', 'unset');
 
         enableCanvasBuild();
 
-        $('#pixel-canvas').empty();
+        pixelCanvas.empty();
     });
 
     /* Colors pixels by listening for cell activity when pixel canvas is set to active */
@@ -213,17 +210,17 @@ $(document).ready(function () {
     });
 
     /* Updates width of canvas based on user input changes */
-    $('#canvas-width').on('input', function (evt) {
+    canvasWidth.on('input', function (evt) {
         var target = $(evt.target);
-        w = target.val();
+        width = target.val();
 
         enableCanvasBuild();
     });
 
     /* Updates height of canvas based on user input changes */
-    $('#canvas-height').on('input', function (evt) {
+    canvasHeight.on('input', function (evt) {
         var target = $(evt.target);
-        h = target.val();
+        height = target.val();
 
         enableCanvasBuild();
     });

@@ -3,13 +3,13 @@
 }
 
 html, body {
-    background-color: #21618C;
+    background-color: #21618c;
     color: #333;
 }
 
 .design-area {
     margin: 0 auto;
-    background: rgba(255, 255, 207, 1);
+    background: rgb(255, 255, 207);
     height: 100vw;
     border-top: 1px solid #696969;
     border-right: 1px solid #696969;
@@ -36,10 +36,6 @@ table, tr, td {
     border: 1px solid black;
 }
 
-tr {
-    /*background-color: red;*/
-}
-
 td {
     padding: 20px;
     width: 5px;
@@ -47,7 +43,7 @@ td {
 
 .main-title {
     text-shadow: -1px -1px 1px #333;
-    background-color: #21618C;
+    background-color: #21618c;
     color: white;
     text-align: center;
 }
@@ -57,7 +53,7 @@ td {
     color: #333;
 }
 
-#build, button {
-    background-color: #B03A2E;
+.build, button {
+    background-color: #b03a2e;
     color: white;
 }
