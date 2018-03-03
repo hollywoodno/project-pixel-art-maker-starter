@@ -1,46 +1,16 @@
+/* Shared */
 * {
     box-sizing: border-box;
 }
 
-html, body {
+
+html,
+body {
     background-color: #21618c;
     color: #333;
 }
 
-.design-area {
-    margin: 0 auto;
-    background: rgb(255, 255, 207);
-    height: 100vw;
-    border-top: 1px solid #696969;
-    border-right: 1px solid #696969;
-    color: #696969;
-}
-
-.preview-area {
-    margin: 0 auto;
-    text-align: center;
-    height: 100vw;
-    border-top: 1px solid #696969;
-    background-color: white;
-    color: #696969;
-}
-
-table {
-    margin: 20px auto;
-    border-collapse: collapse;
-    padding: 20px;
-    empty-cells: show;
-}
-
-table, tr, td {
-    border: 1px solid black;
-}
-
-td {
-    padding: 20px;
-    width: 5px;
-}
-
+/* Headers/Titles */
 .main-title {
     text-shadow: -1px -1px 1px #333;
     background-color: #21618c;
@@ -53,7 +23,50 @@ td {
     color: #333;
 }
 
-.build, button {
+/* Design Area */
+.design-area {
+    margin: 0 auto;
+    background: rgb(255, 255, 207);
+    height: 100vw;
+    border-top: 1px solid #696969;
+    border-right: 1px solid #696969;
+    color: #696969;
+}
+
+/* Preview/Live Pixel Canvas Area */
+.preview-area {
+    margin: 0 auto;
+    text-align: center;
+    height: 100vw;
+    border-top: 1px solid #696969;
+    background-color: white;
+    color: #696969;
+}
+
+
+table {
+    margin: 20px auto;
+    border-collapse: collapse;
+    padding: 20px;
+    empty-cells: show;
+}
+
+
+table,
+tr,
+td {
+    border: 1px solid black;
+}
+
+
+td {
+    padding: 20px;
+    width: 5px;
+}
+
+
+.build,
+button {
     background-color: #b03a2e;
     color: white;
 }
