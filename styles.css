@@ -33,6 +33,11 @@ body {
     color: #696969;
 }
 
+
+.btn-group button {
+    width: 50%;
+}
+
 /* Preview/Live Pixel Canvas Area */
 .preview-area {
     margin: 0 auto;
@@ -69,4 +74,9 @@ td {
 button {
     background-color: #b03a2e;
     color: white;
+}
+
+
+.reset-canvas {
+    width: 40%;
 }

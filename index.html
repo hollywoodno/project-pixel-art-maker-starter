@@ -1,6 +1,9 @@
 ﻿<!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <title>Pixel Maker</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +13,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css">
+
 </head>
+
 <body>
+
     <div class="container-fluid">
 
         <!--Header Section-->
@@ -22,35 +28,49 @@
         <!-- Canvas Design -->
 
         <div class="row">
+
             <div class="col-md-4 design-area">
+
                 <h1 class="text-center section-title">Design</h1>
 
                 <!--Dimension Selection-->
 
-                <form id="canvas-dimensions" role="form">
+                <form id="canvas-dimensions">
+
                     <div class="form-group">
+
                         <label for="canvas-width">Width:</label>
                         <input type="number" min="1" max="12" class="form-control dimension dimension-control-group" id="canvas-width" placeholder="canvas width" name="canvas-width">
+
                     </div>
+
                     <div class="form-group">
+
                         <label for="canvas-height">Height:</label>
                         <input type="number" min="1" max="12" class="form-control dimension dimension-control-group" id="canvas-height" placeholder="canvas height" name="canvas-height">
+
                     </div>
-                    <div class="btn-group" style="width: 50%;">
-                        <button type="submit" style="width: 50%;" class="btn btn-default dimension-control-group" id="preview" disabled>Preview</button>
-                        <button type="reset" id="reset" style="width: 50%;" class="btn btn-default">Reset</button>
+
+                    <div class="btn-group">
+
+                        <button type="submit" class="btn btn-default dimension-control-group" id="preview" disabled>Preview</button>
+
+                        <button type="reset" id="reset" class="btn btn-default">Reset</button>
+
                     </div>
+
                 </form>
 
-                <br />
-                <br />
+                <br>
+                <br>
 
                 <!-- Color Picker -->
 
                 <label for="color-picker">Pick your color</label>
                 <input type="color" id="color-picker">
-                <br />
-                <br />
+
+                <br>
+                <br>
 
                 <button class="btn btn-block build" id="build" disabled>Build</button>
 
@@ -59,37 +79,58 @@
             <!-- Pixel Canvas Preview -->
 
             <div class="col-md-8 preview-area">
+
+            <!-- TODO: Add section to explain how to use features -->
                 <h1 class="section-title">Preview</h1>
+
                 <table id="pixel-canvas"></table>
+
             </div>
 
         </div>
+
     </div>
 
     <!--Confirm Reset Pixel Canvas Modal-->
 
     <div class="modal fade" id="confirmStartOverModal" role="dialog">
+
         <div class="modal-dialog">
 
             <!-- Modal content-->
             <div class="modal-content">
+
                 <div class="modal-header">
+
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+
                     <h4 class="modal-title">Confirm Clear Canvas: </h4>
+
                 </div>
+
                 <div class="modal-body">
+
                     <p>Are you sure you want to start over? You will loose your pixel art.</p>
+
                 </div>
+
                 <div class="modal-footer">
+
                     <button type="button" id="start-over" class="btn btn-primary">Start Over</button>
+
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
                 </div>
+
             </div>
 
         </div>
+
     </div>
 
     <script src="designs.js"></script>
+
 </body>
+
 </html>
 

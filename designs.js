@@ -67,7 +67,7 @@ $(document).ready(function () {
 
         buildPreview(pixelCanvas, w, h);
 
-        previewArea.prepend('<br><button class="btn reset-canvas" id="start-over-button" data-toggle="modal" data-target="#confirmStartOverModal" style="width: 80%">Start Over</button>');
+        previewArea.prepend('<br><button class="btn reset-canvas" id="start-over-button" data-toggle="modal" data-target="#confirmStartOverModal">Start Over</button>');
 
         // May be best to move this to CSS file.
         $('body').css('cursor', 'cell');
