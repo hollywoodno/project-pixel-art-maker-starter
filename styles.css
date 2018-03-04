@@ -87,8 +87,7 @@ button {
 
 
 /* Preview Toolbar Area */
-.toolbar {
-    /*margin: 0 auto;*/
+/*.toolbar {
     background: transparent;
     height: 200px;
     margin: 100px auto 0 auto;
@@ -97,4 +96,4 @@ button {
     border: 2px solid #696969;
     color: #fff;
     display: none;
-}
+}*/

@@ -50,14 +50,10 @@ $(document).ready(function () {
 
     /**
     * @description Toogles the display of the design area for pixel canvas
-    * @param {boolean} hide - If true hides the display else displays it
+    * @param {boolean} hide - If true hides the design area and builds live canvas else displays it
     */
     function hideDesignArea(hide) {
-        if (hide) {
-            designArea.hide();
-        } else {
-            designArea.show();
-        }
+        hide ?  designArea.hide() : designArea.show('fast');
     }
 
     /**
@@ -65,23 +61,24 @@ $(document).ready(function () {
     * @param
     */
     function buildCanvas() {
-        previewArea.first().removeClass('col-md-8');
-        previewArea.first().addClass('col-md-12');
-        previewArea.first().removeClass('hidden-xs');
+        previewArea.first().addClass('col-md-12')
+            .removeClass('hidden-xs')
+            .removeClass('col-md-8');
+
         previewArea.find('.section-title').css('display', 'none');
+        previewArea.prepend('<br><button class="btn reset-canvas" ' +
+            'id="start-over-button" data-toggle="modal" ' +
+            'data-target="#confirmStartOverModal">Start Over</button>');
 
         // $('.toolbar').css('display', 'initial');
 
         // This differentiate a preview canvas from the live canvas
         pixelCanvas.addClass('active');
+
         width = canvasWidth.val();
         height = canvasHeight.val();
 
         buildPreview(pixelCanvas, width, height);
-
-        previewArea.prepend('<br><button class="btn reset-canvas" ' +
-            'id="start-over-button" data-toggle="modal" ' +
-            'data-target="#confirmStartOverModal">Start Over</button>');
 
         // May be best to move this to CSS file.
         $('body').css('cursor', 'cell');
@@ -153,7 +150,6 @@ $(document).ready(function () {
         // First remove any existing preview then go live
         pixelCanvas.empty();
         hideDesignArea(true);
-
         buildCanvas();
     });
 
@@ -177,7 +173,10 @@ $(document).ready(function () {
 
         // Reset preview area
         previewArea.find('.section-title').css('display', 'initial');
-        previewArea.first().addClass('col-md-6');
+        previewArea.addClass('hidden-xs')
+            .addClass('col-md-8')
+            .removeClass('col-md-12');
+
         $('#start-over-button').remove();
 
         hideDesignArea(false);
@@ -196,12 +195,18 @@ $(document).ready(function () {
 
         // Update the view
         $('.dimension-control-group').removeAttr('disabled');
-        pixelCanvas.removeClass('active');
+
+        pixelCanvas.removeClass('active')
+        .empty();
+
+        previewArea.first().addClass('hidden-xs')
+        .addClass('col-md-8')
+        .removeClass('col-md-12');
+
         colorPicker.val('#000');
         $('body').css('cursor', 'unset');
 
         enableCanvasBuild();
-        pixelCanvas.empty();
     });
 
     /**
@@ -220,11 +225,11 @@ $(document).ready(function () {
         if (!evt.originalEvent) {
             // Keep track of colored/uncolored pixels by presence of 'colored' class
             if (target.hasClass('colored')) {
-                target.css('background-color', '#FFF');
-                target.removeClass('colored');
+                target.css('background-color', '#FFF')
+                    .removeClass('colored');
             } else {
-                target.css('background-color', color);
-                target.addClass('colored');
+                target.css('background-color', color)
+                    .addClass('colored');
             }
         }
     });
