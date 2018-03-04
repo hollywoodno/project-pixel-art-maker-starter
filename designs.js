@@ -11,6 +11,7 @@ $(document).ready(function () {
     let end = 5;
 
     // Selectors
+    let colorPicker = $('.color-picker');
     let pixelCanvas = $('#pixel-canvas');
     let designArea = $('.design-area');
     let previewArea = $('.preview-area');
@@ -64,7 +65,9 @@ $(document).ready(function () {
     * @param
     */
     function buildCanvas() {
-        previewArea.first().removeClass('col-md-8');
+        previewArea.first().removeClass('col-md-6');
+        previewArea.first().addClass('col-md-10');
+
         previewArea.find('.section-title').css('display', 'none');
 
         // This differentiate a preview canvas from the live canvas
@@ -156,8 +159,8 @@ $(document).ready(function () {
     * @description Handler for updating the color from the color picker
     * @param
     */
-    $('#color-picker').on('input', function () {
-        color = $('#color-picker').val();
+    colorPicker.on('input', function () {
+        color = colorPicker.val();
     });
 
     /**
@@ -172,7 +175,7 @@ $(document).ready(function () {
 
         // Reset preview area
         previewArea.find('.section-title').css('display', 'initial');
-        previewArea.first().addClass('col-md-8');
+        previewArea.first().addClass('col-md-6');
         $('#start-over-button').remove();
 
         hideDesignArea(false);
@@ -192,7 +195,7 @@ $(document).ready(function () {
         // Update the view
         $('.dimension-control-group').removeAttr('disabled');
         pixelCanvas.removeClass('active');
-        $('#color-picker').val('#000');
+        colorPicker.val('#000');
         $('body').css('cursor', 'unset');
 
         enableCanvasBuild();

@@ -25,8 +25,9 @@ body {
 
 /* Design Area */
 .design-area {
-    margin: 0 auto;
+    /*margin: 0 auto;*/
     background: rgb(255, 255, 207);
+    min-height: 100vh;
     height: 100vw;
     border-top: 1px solid #696969;
     border-right: 1px solid #696969;
@@ -42,6 +43,7 @@ body {
 .preview-area {
     margin: 0 auto;
     text-align: center;
+    min-height: 100vh;
     height: 100vw;
     border-top: 1px solid #696969;
     background-color: white;
@@ -79,4 +81,17 @@ button {
 
 .reset-canvas {
     width: 40%;
+}
+
+
+/* Preview Toolbar Area */
+.toolbar {
+    /*margin: 0 auto;*/
+    background: transparent;
+    height: 200px;
+    margin: 100px auto 0 auto;
+    text-align: center;
+    vertical-align: middle;
+    border: 2px solid #696969;
+    color: #fff;
 }
