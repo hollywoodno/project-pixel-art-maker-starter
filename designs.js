@@ -205,6 +205,7 @@ $(document).ready(function () {
 
         colorPicker.val('#000');
         $('body').css('cursor', 'unset');
+        canvasWidth.focus();
 
         enableCanvasBuild();
     });
