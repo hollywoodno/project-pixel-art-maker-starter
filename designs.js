@@ -65,10 +65,12 @@ $(document).ready(function () {
     * @param
     */
     function buildCanvas() {
-        previewArea.first().removeClass('col-md-6');
-        previewArea.first().addClass('col-md-10');
-
+        previewArea.first().removeClass('col-md-8');
+        previewArea.first().addClass('col-md-12');
+        previewArea.first().removeClass('hidden-xs');
         previewArea.find('.section-title').css('display', 'none');
+
+        // $('.toolbar').css('display', 'initial');
 
         // This differentiate a preview canvas from the live canvas
         pixelCanvas.addClass('active');
