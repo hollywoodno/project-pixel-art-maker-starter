@@ -62,8 +62,9 @@ $(document).ready(function () {
     */
     function buildCanvas() {
         previewArea.first().addClass('col-md-12')
-            .removeClass('hidden-xs')
-            .removeClass('col-md-8');
+        .removeClass('hidden-xs')
+        .removeClass('hidden-sm')
+        .removeClass('col-md-8');
 
         previewArea.find('.section-title').css('display', 'none');
         previewArea.prepend('<br><button class="btn reset-canvas" ' +
@@ -174,8 +175,9 @@ $(document).ready(function () {
         // Reset preview area
         previewArea.find('.section-title').css('display', 'initial');
         previewArea.addClass('hidden-xs')
-            .addClass('col-md-8')
-            .removeClass('col-md-12');
+        .addClass('hidden-sm')
+        .addClass('col-md-8')
+        .removeClass('col-md-12');
 
         $('#start-over-button').remove();
 
@@ -222,15 +224,15 @@ $(document).ready(function () {
         /* Important: We only want to color pixels on an original 'click' event not
          as an after effect of mousedown or any other event. Original click events
          will not have an originalEvent property.
-        */
-        if (!evt.originalEvent) {
+         */
+         if (!evt.originalEvent) {
             // Keep track of colored/uncolored pixels by presence of 'colored' class
             if (target.hasClass('colored')) {
                 target.css('background-color', '#FFF')
-                    .removeClass('colored');
+                .removeClass('colored');
             } else {
                 target.css('background-color', color)
-                    .addClass('colored');
+                .addClass('colored');
             }
         }
     });
@@ -242,9 +244,9 @@ $(document).ready(function () {
     $('body').on('mousedown', '.active td', function (evt5) {
     // TODO: This listener will have the coloring of pixels logic
 
-        /* We color the cells by manually triggering their clicking */
-        dragPixelColoring = true;
-        $(evt5.target).trigger('click');
+    /* We color the cells by manually triggering their clicking */
+    dragPixelColoring = true;
+    $(evt5.target).trigger('click');
 
         // As we enter new cells, color them
         if (dragPixelColoring) {
