@@ -19,7 +19,7 @@ $(document).ready(function () {
     let canvasWidth = $('#canvas-width');
     let canvasHeight = $('#canvas-height');
 
-// --------------------------------
+    // --------------------------------
     /**
     * @description Dynamically builds a table that represents pixel grid
     * @param {number} w - The number of columns the table should have
@@ -53,7 +53,7 @@ $(document).ready(function () {
     * @param {boolean} hide - If true hides the design area and builds live canvas else displays it
     */
     function hideDesignArea(hide) {
-        hide ?  designArea.hide() : designArea.show('fast');
+        hide ? designArea.hide() : designArea.show('fast');
     }
 
     /**
@@ -62,12 +62,12 @@ $(document).ready(function () {
     */
     function buildCanvas() {
         previewArea.first().addClass('col-md-12')
-        .removeClass('hidden-xs')
-        .removeClass('hidden-sm')
-        .removeClass('col-md-8');
+            .removeClass('hidden-xs')
+            .removeClass('hidden-sm')
+            .removeClass('col-md-8');
 
-        previewArea.find('.section-title').css('display', 'none');
-        previewArea.prepend('<br><button class="btn reset-canvas" ' +
+        previewArea.find('.section-title').hide();
+        previewArea.prepend('<button class="btn reset-canvas" ' +
             'id="start-over-button" data-toggle="modal" ' +
             'data-target="#confirmStartOverModal">Start Over</button>');
 
@@ -79,7 +79,7 @@ $(document).ready(function () {
         width = canvasWidth.val();
         height = canvasHeight.val();
 
-        buildPreview(pixelCanvas, width, height);
+        buildPreview(pixelCanvas, width, height, false);
 
         // May be best to move this to CSS file.
         $('body').css('cursor', 'cell');
@@ -169,20 +169,6 @@ $(document).ready(function () {
     $('#start-over').on('click', function () {
         $('#confirmStartOverModal').modal('hide');
 
-        // Clear the pixel canvas table of it's cells
-        pixelCanvas.empty();
-
-        // Reset preview area
-        previewArea.find('.section-title').css('display', 'initial');
-        previewArea.addClass('hidden-xs')
-        .addClass('hidden-sm')
-        .addClass('col-md-8')
-        .removeClass('col-md-12');
-
-        $('#start-over-button').remove();
-
-        hideDesignArea(false);
-
         $('#reset').trigger('click');
     });
 
@@ -198,12 +184,15 @@ $(document).ready(function () {
         // Update the view
         $('.dimension-control-group').removeAttr('disabled');
 
+        $('#start-over-button').remove();
         pixelCanvas.removeClass('active')
-        .empty();
-
-        previewArea.first().addClass('hidden-xs')
-        .addClass('col-md-8')
-        .removeClass('col-md-12');
+        pixelCanvas.empty();
+        previewArea.find('.section-title').show();
+        previewArea.addClass('hidden-xs')
+            .addClass('hidden-sm')
+            .removeClass('col-md-12')
+            .addClass('col-md-8');
+        hideDesignArea(false);
 
         colorPicker.val('#000');
         $('body').css('cursor', 'unset');
@@ -224,15 +213,15 @@ $(document).ready(function () {
         /* Important: We only want to color pixels on an original 'click' event not
          as an after effect of mousedown or any other event. Original click events
          will not have an originalEvent property.
-         */
-         if (!evt.originalEvent) {
+        */
+        if (!evt.originalEvent) {
             // Keep track of colored/uncolored pixels by presence of 'colored' class
             if (target.hasClass('colored')) {
                 target.css('background-color', '#FFF')
-                .removeClass('colored');
+                    .removeClass('colored');
             } else {
                 target.css('background-color', color)
-                .addClass('colored');
+                    .addClass('colored');
             }
         }
     });
@@ -242,20 +231,20 @@ $(document).ready(function () {
     * @param {Event} - The object to which event was triggered
     */
     $('body').on('mousedown', '.active td', function (evt5) {
-    // TODO: This listener will have the coloring of pixels logic
+        // TODO: This listener will have the coloring of pixels logic
 
-    /* We color the cells by manually triggering their clicking */
-    dragPixelColoring = true;
-    $(evt5.target).trigger('click');
+        /* We color the cells by manually triggering their clicking */
+        dragPixelColoring = true;
+        $(evt5.target).trigger('click');
 
         // As we enter new cells, color them
         if (dragPixelColoring) {
-            $('.active td').on('mouseenter', function(evt2) {
+            $('.active td').on('mouseenter', function (evt2) {
                 $(evt2.target).trigger('click');
             });
 
             // Terminates the coloring of new cell, by by removing the listener
-            $('.active td').on('mouseup', function(evt3) {
+            $('.active td').on('mouseup', function (evt3) {
                 //$(evt3.target).css('background-color', 'purple'); // Color last cell dragged to. Just a little extra magic
                 $('.active td').off('mouseenter');
                 dragPixelColoring = false;

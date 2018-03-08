@@ -25,7 +25,7 @@ body {
 
 /* Design Area */
 .design-area {
-    /*margin: 0 auto;*/
+    margin: 0 auto;
     background: rgb(255, 255, 207);
     min-height: 100vh;
     height: 100vw;
@@ -56,7 +56,7 @@ table {
     border-collapse: collapse;
     padding: 20px;
     empty-cells: show;
-    /*max-width: 100vh;*/
+    max-width: 100vh;
 }
 
 
