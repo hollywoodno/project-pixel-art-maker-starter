@@ -3,8 +3,9 @@ $(document).ready(function () {
 
     let width;
     let height;
-    let color = '#000';
+    let color = '#000000';
     let dragPixelColoring = false;
+    let toolbarIsOpen = false;
 
     // Previewing pixel canvas
     let start = 0;
@@ -18,6 +19,8 @@ $(document).ready(function () {
     let canvasDimensions = $('#canvas-dimensions');
     let canvasWidth = $('#canvas-width');
     let canvasHeight = $('#canvas-height');
+    let toolbar = $('.toolbar');
+    let toolbox = $('.toolbox');
 
     // --------------------------------
     /**
@@ -82,7 +85,7 @@ $(document).ready(function () {
         buildPreview(pixelCanvas, width, height, false);
 
         // May be best to move this to CSS file.
-        $('body').css('cursor', 'cell');
+        $(pixelCanvas).css('cursor', 'cell');
     }
 
     /**
@@ -123,6 +126,16 @@ $(document).ready(function () {
 
     }
 
+    /**
+* @description Toogles the display of the live pixel canvas toolbar 
+* @param {boolean} hide - If true shows the toolbar else hides it
+*/
+    function showToolbar(show) {
+        // Set the color on toolbar so it match color during designing
+        $('.toolbar .color-picker').val(color);
+        show ? $('.toolbar').show() : $('.toolbar').hide();
+    }
+
     /* Listeners */
 
     /**
@@ -149,6 +162,7 @@ $(document).ready(function () {
         // TODO: Animate the transition of hiding preview area and going live fullscreen
 
         // First remove any existing preview then go live
+        showToolbar(true);
         pixelCanvas.empty();
         hideDesignArea(true);
         buildCanvas();
@@ -158,8 +172,16 @@ $(document).ready(function () {
     * @description Handler for updating the color from the color picker
     * @param
     */
-    colorPicker.on('input', function () {
-        color = colorPicker.val();
+    $('body').on('input', '.color-picker', function (evt) {
+        color = $(evt.target).val();
+
+        // If color is changed from the toolbar, we want to automatically close the toolbar after color selection.
+        // The color picker in the toolbar, will have a parent with the tooling class.
+        let toolbarParents = $(evt.target).parents('.tooling');
+        if (toolbarParents.length > 0) {
+            toolbarIsOpen = true;
+            toolbarParents.first().trigger('click'); 
+        }
     });
 
     /**
@@ -179,7 +201,7 @@ $(document).ready(function () {
     $('body').on('click', '#reset', function () {
         width = undefined;
         height = undefined;
-        color = '#000';
+        color = '#000000';
 
         // Update the view
         $('.dimension-control-group').removeAttr('disabled');
@@ -193,9 +215,10 @@ $(document).ready(function () {
             .removeClass('col-md-12')
             .addClass('col-md-8');
         hideDesignArea(false);
+        showToolbar(false);
 
         colorPicker.val('#000');
-        $('body').css('cursor', 'unset');
+        $(pixelCanvas).css('cursor', 'unset');
         canvasWidth.focus();
 
         enableCanvasBuild();
@@ -274,4 +297,53 @@ $(document).ready(function () {
         enableCanvasBuild();
     });
 
+    /**
+    * @description Animates showing/hiding toolbox while in live pixel coloring mode
+    * @param {Event} - The object to which event was triggered
+    */
+    $('.tooling').on('click', function (evt) {
+        // Use 'this' so that toolbox items don't toggle display of toolbar
+        if (evt.target != this) { return };
+        if (toolbarIsOpen) {
+            toolbarIsOpen = false;
+
+            $('.reset-canvas').animate({
+                marginLeft: "0"
+            }, 500);
+
+            $('.tool-icon').animate({
+                left: 0,
+            }, 280, function () {
+                $('.tool-icon').css('transform', 'rotate(-130deg)');
+            });
+
+            $('.toolbox').animate({
+                left: -100,
+            }, 300, function () {
+                pixelCanvas.css({ 'background-color': 'transparent', 'filter': 'blur(0)' });
+                $('.tool-icon').css('transform', 'rotate(-130deg)');
+            });
+        } else {
+
+            toolbarIsOpen = true;
+
+            pixelCanvas.css({ 'background-color': 'transparent', 'filter': 'blur(3px)' });
+            $('.reset-canvas').animate({
+                marginLeft: toolbox.width() + 'px'
+            });
+
+            $('.toolbox').animate({
+                opacity: 1,
+                left: -10,
+            }, 300, function () {
+                $('.tool-icon').css('transform', 'rotate(-30deg)');
+            });
+
+            $('.tool-icon').animate({
+                left: toolbox.width() + 5,
+            }, 280, function () {
+                $('.tool-icon').css('transform', 'rotate(-30deg)');
+            });
+        }
+    });
 });

@@ -6,14 +6,16 @@
 
 html,
 body {
-    background-color: #21618c;
+    /*background-color: #21618c;*/
+    background-color: cadetblue;
     color: #333;
 }
 
 /* Headers/Titles */
 .main-title {
     text-shadow: -1px -1px 1px #333;
-    background-color: #21618c;
+    /*background-color: #21618c;*/
+    background-color: cadetblue;
     color: white;
     text-align: center;
 }
@@ -25,13 +27,14 @@ body {
 
 /* Design Area */
 .design-area {
-    margin: 0 auto;
+    /*margin: 0 auto;*/
     background: rgb(255, 255, 207);
     min-height: 100vh;
     height: 100vw;
     border-top: 1px solid #696969;
     border-right: 1px solid #696969;
     color: #696969;
+    z-index: 5;
 }
 
 
@@ -56,7 +59,7 @@ table {
     border-collapse: collapse;
     padding: 20px;
     empty-cells: show;
-    max-width: 100vh;
+    /*max-width: 100vh;*/
 }
 
 
@@ -83,17 +86,48 @@ button {
 
 .reset-canvas {
     width: 40%;
+    margin-top: 10px;
+}
+
+/* Preview Toolbar Area */
+.toolbar {
+    display: none;
 }
 
 
-/* Preview Toolbar Area */
-/*.toolbar {
-    background: transparent;
-    height: 200px;
-    margin: 100px auto 0 auto;
+.tool-icon {
+    left: 0;
+    z-index: 9;
+    position: absolute;
+    color: #696969;
+    transform: rotate(230deg);
+}
+
+
+.glyphicon-wrench {
+    font-size: 3.4em;
+}
+
+
+.toolbox {
+    border-width: 15px .5px .5px 0;
+    border-top-color: rgb(234, 223, 165);
+    border-right-color: rgb(234, 223, 165);
+    border-bottom-color: #666;
+    border-left-color: #666;
+    box-shadow: 6px 6px 10px rgba(58, 55, 106, 0.50);
+    border-radius: 5px;
+    border-style: solid;
+    color: #666;
+    /*background: rgba(203, 241, 174, .95);*/
+    background: rgba(255, 255, 255, .85);
+    padding: 10px;
+    opacity: 0.10;
+    left: -100px;
+    margin-top: 10px;
+    z-index: 9;
+    position: absolute;
+    height: 300px;
+    width: 100px;
     text-align: center;
-    vertical-align: middle;
-    border: 2px solid #696969;
-    color: #fff;
-    display: none;
-}*/
+}
