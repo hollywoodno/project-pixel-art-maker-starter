@@ -1,10 +1,17 @@
 $(document).ready(function () {
     'use strict';
 
+    const letters = [['a', 'b', 'c', 'd', 'e'],
+                     ['d', 'e', 'f', 'g', 'h'],
+                     ['i', 'j', 'k', 'l', 'm'],
+                     ['n', 'o', 'p', 'q', 'r'],
+                     ['s', 't', 'u', 'v', 'w'],
+                     ['x', 'y', 'z']];
     let width;
     let height;
     let color = '#000000';
     let dragPixelColoring = false;
+    let pixelTexting = false;
     let toolbarIsOpen = false;
 
     // Previewing pixel canvas
@@ -136,6 +143,16 @@ $(document).ready(function () {
         show ? $('.toolbar').show() : $('.toolbar').hide();
     }
 
+    function colorPixel(target) {
+        if (target.hasClass('colored')) {
+            target.css('background-color', '#FFF')
+                .removeClass('colored');
+        } else {
+            target.css('background-color', color)
+                .addClass('colored');
+        }
+    }
+
     /* Listeners */
 
     /**
@@ -180,7 +197,7 @@ $(document).ready(function () {
         let toolbarParents = $(evt.target).parents('.tooling');
         if (toolbarParents.length > 0) {
             toolbarIsOpen = true;
-            toolbarParents.first().trigger('click'); 
+            toolbarParents.first().trigger('click');
         }
     });
 
@@ -228,42 +245,51 @@ $(document).ready(function () {
     * @description Colors pixels when canvas in active mode
     * @param {Event} - The object to which event was triggered
     */
-    $('body').on('click', '.active td', function (evt) {
-        // TODO: Remove this listener - move pixel coloring to onmousedown event
+    //     $('body').on('click', '.active td', function (evt) {
+    //         // TODO: Remove this listener - move pixel coloring to onmousedown event
 
-        let target = $(evt.target);
+    //         let target = $(evt.target);
 
-        /* Important: We only want to color pixels on an original 'click' event not
-         as an after effect of mousedown or any other event. Original click events
-         will not have an originalEvent property.
-        */
-        if (!evt.originalEvent) {
-            // Keep track of colored/uncolored pixels by presence of 'colored' class
-            if (target.hasClass('colored')) {
-                target.css('background-color', '#FFF')
-                    .removeClass('colored');
-            } else {
-                target.css('background-color', color)
-                    .addClass('colored');
-            }
-        }
-    });
+    //         /* Important: We only want to color pixels on an original 'click' event not
+    //          as an after effect of mousedown or any other event. Original click events
+    //          will not have an originalEvent property.
+    //         */
+    //         if (!evt.originalEvent) {
+    //             if (dragPixelColoring) {
+    //               // Keep track of colored/uncolored pixels by presence of 'colored' class
+    //               if (target.hasClass('colored')) {
+    //                   target.css('background-color', '#FFF')
+    //                       .removeClass('colored');
+    //               } else {
+    //                   target.css('background-color', color)
+    //                       .addClass('colored');
+    //               }
+    //               console.log('coloring');
+    //             } else {
+    //                 target.append('<input type="text" size="1" class="pixel-text">');
+    //                 console.log('should be texting'); 
+    //           }
+    //         }
+    //     });
 
     /**
     * @description Allows coloring of multiple pixels with dragging
     * @param {Event} - The object to which event was triggered
     */
     $('body').on('mousedown', '.active td', function (evt5) {
-        // TODO: This listener will have the coloring of pixels logic
 
-        /* We color the cells by manually triggering their clicking */
-        dragPixelColoring = true;
-        $(evt5.target).trigger('click');
+        dragPixelColoring = !pixelTexting;
+        let firstCell = $(evt5.target);
 
-        // As we enter new cells, color them
         if (dragPixelColoring) {
+            // Color the first cell
+            colorPixel(firstCell);
+
+            // As we enter new cells, color them
             $('.active td').on('mouseenter', function (evt2) {
-                $(evt2.target).trigger('click');
+                //$(evt2.target).trigger('click');
+                let targetCell = $(evt2.target);
+                colorPixel(targetCell);
             });
 
             // Terminates the coloring of new cell, by by removing the listener
@@ -273,7 +299,30 @@ $(document).ready(function () {
                 dragPixelColoring = false;
             });
         }
+        //else {
+        //    // Enter a letter
+        //    //firstCell.append('<input type="text" size="1" class="pixel-text">');
+        //    debugger;
+        //    // We want to get keypress and add letter to td
+        //    $('.active td').keypress(function (evt) {
+        //        console.log("got keypress: ", evt);
+        //        firstCell.html("H");
+        //    });
+        //}
     });
+
+
+    // Enter a letter
+    //firstCell.append('<input type="text" size="1" class="pixel-text">');
+
+    // We want to get keypress and add letter to td
+    $(document).on('keydown', 'td', function (evt) {
+        debugger;
+        if (pixelTexting) {
+            console.log("got keypress: ", evt);
+            $(evt.target).html("H");
+        }
+     });
 
     /**
     * @description Updates width of canvas based on user input changes
@@ -345,5 +394,36 @@ $(document).ready(function () {
                 $('.tool-icon').css('transform', 'rotate(-30deg)');
             });
         }
+    });
+
+    // WIP: TODO: finish implementing toolbar input text tool for live pixel grid
+    $('.text-tool').on('click', function (evt) {
+        console.log('text tool selected. make input fields');
+
+            if (pixelTexting) {
+                $('.text-tool').css('color', 'grey');
+                pixelTexting = false;
+                dragPixelColoring = true;
+                $('.letter-grid').remove();
+            } else {
+                $('.text-tool').css('color', 'green');
+                dragPixelColoring = false;
+                pixelTexting = true;
+
+                let letterGrid = $('<table class="letter-grid">');
+                $('.toolbox').append(letterGrid);
+
+                //$.each(letters, function (index, letter) {
+                //    letterGrid.append('<p>' + letter + '</p>');
+                //});
+                for (let row = 0; row < letters.length; row++) {
+                    let newRow = '<tr>';
+                    for (let col = 0; col < letters[row].length; col++) {
+                        newRow += '<td class="letter">' + letters[row][col] + '</td>';
+                    }
+                    newRow += '</tr>';
+                    letterGrid.append(newRow);
+                }
+            }
     });
 });

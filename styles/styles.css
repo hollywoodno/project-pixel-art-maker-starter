@@ -76,6 +76,29 @@ td {
     max-height: 80%;
 }
 
+.letter-grid {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    margin: 0 2px 5px 2px;
+    font-size: 12px;
+}
+
+.letter {
+    /*width: 5px;*/
+    max-width: 80%;
+    max-height: 80%;
+    margin: 0;
+    padding: 0;
+}
+
+
+/*.pixel-text {
+    size: 1px;
+    max-length: 1;
+    border: none;
+}*/
+
 
 .build,
 button {
@@ -130,4 +153,8 @@ button {
     height: 300px;
     width: 100px;
     text-align: center;
+}
+
+.text-tool {
+    margin: 10px;
 }
