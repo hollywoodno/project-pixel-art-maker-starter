@@ -13,6 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="styles/styles.css">
 
 </head>
@@ -32,12 +33,27 @@
             <div class="toolbox tooling">
                 <h5>My Toolbar</h5>
                 <label for="color-picker-2" class="sr-only">Pick your color</label>
-                <input type="color" id="color-picker-2" class="color-picker">
+                <p>
+                    <input type="color" id="color-picker-2" class="color-picker" placeholder="Color Picker" />
+                    <span class="glyphicon glyphicon-tint trigger-color-picker"></span>
+                </p>
                 <p class="text-tool"><span class="glyphicon glyphicon-text-size"></span></p>
+                <p class="reset-canvas"
+                   id="start-over-button"
+                   data-toggle="modal"
+                   data-target="#confirmStartOverModal">
+                    <span class="glyphicon glyphicon-trash reset-canvas"></span>
+                </p>
+                <!--<button class="btn reset-canvas"
+                        id="start-over-button"
+                        data-toggle="modal"
+                        data-target="#confirmStartOverModal">
+                    Start Over
+                </button>-->
             </div>
 
             <div class="tool-icon tooling">
-                <span class="glyphicon glyphicon-wrench tooling"></span>
+                <p><span class="glyphicon glyphicon-hand-left tooling"></span></p>
             </div>
 
         </div>

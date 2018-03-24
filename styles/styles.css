@@ -9,7 +9,20 @@ body {
     /*background-color: #21618c;*/
     background-color: cadetblue;
     color: #333;
+    cursor: pointer;
 }
+
+
+/* IMPORTANT: Hides all input type="color" except in the canvas builder, so we can use an icon instead of ugly default element*/
+input[type="color"]:not(#color-picker-1) {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
 
 /* Headers/Titles */
 .main-title {
@@ -19,6 +32,7 @@ body {
     color: white;
     text-align: center;
 }
+
 
 .section-title {
     text-shadow: 1px 1px 1px #fff;
@@ -59,6 +73,8 @@ table {
     border-collapse: collapse;
     padding: 20px;
     empty-cells: show;
+    table-layout: fixed;
+    width: 200px;
     /*max-width: 100vh;*/
 }
 
@@ -71,33 +87,27 @@ td {
 
 
 td {
-    padding: 15px;
-    max-width: 80%;
-    max-height: 80%;
-}
-
-.letter-grid {
-    width: 100%;
-    padding: 20px;
-    text-align: center;
-    margin: 0 2px 5px 2px;
-    font-size: 12px;
-}
-
-.letter {
-    /*width: 5px;*/
-    max-width: 80%;
-    max-height: 80%;
+    width: 25px;
+    height: 25px;
     margin: 0;
     padding: 0;
+    /*min-width: 80%;*/
+    /*min-height: 80%;*/
 }
 
 
-/*.pixel-text {
-    size: 1px;
-    max-length: 1;
-    border: none;
-}*/
+.pixel-text, .letter {
+    cursor: text;
+    text-transform: uppercase;
+    /*     color: salmon; */
+}
+
+
+.letter {
+    border-radius: 100%;
+    background-color: #fff;
+    border: 2px solid rgb(234, 223, 165);
+}
 
 
 .build,
@@ -108,8 +118,14 @@ button {
 
 
 .reset-canvas {
-    width: 40%;
+    /*width: 60%;*/
+    /*margin-top: 10px;*/
+}
+
+
+.actions {
     margin-top: 10px;
+    text-align: center;
 }
 
 /* Preview Toolbar Area */
@@ -119,11 +135,30 @@ button {
 
 
 .tool-icon {
-    left: 0;
+    left: 5px;
     z-index: 9;
     position: absolute;
     color: #696969;
-    transform: rotate(230deg);
+    font-size: 2em;
+    /*transform: rotate(230deg);*/
+}
+
+.current-tool-container {
+    left: 150px;
+    z-index: 9;
+    position: absolute;
+    margin: 0;
+}
+
+
+.keyboard {
+    margin: 0 auto;
+    text-align: center;
+    padding: 0;
+    border-collapse: collapse;
+    empty-cells: show;
+    /*table-layout: fixed;
+    width: 100px;*/
 }
 
 
@@ -155,6 +190,12 @@ button {
     text-align: center;
 }
 
+
 .text-tool {
-    margin: 10px;
+    margin: 20px;
+}
+
+
+.tool-title {
+    margin-bottom: 5px;
 }
