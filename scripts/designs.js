@@ -12,6 +12,7 @@ $(document).ready(function () {
     let dragPixelColoring = false;
     let pixelTexting = false;
     let toolbarIsOpen = false;
+    let sparkles = false;
 
     // Previewing pixel canvas
     let start = 0;
@@ -33,7 +34,7 @@ $(document).ready(function () {
         selected: false,
         icon: $('.color-cells'),
         html: '<div class="col-xs-auto tool-options">' +
-        '<span class="glyphicon glyphicon-tint trigger-color-picker"></span></div>',
+        '<span class="glyphicon glyphicon-tint trigger-color-picker" style="display: inline-block"></span><span class="glyphicon glyphicon-asterisk sparkles" style="display: inline-block"></span></div>',
         show: function () {
             $('.tool-container').empty();
             $('.tool-container').prepend(this.html);
@@ -100,6 +101,7 @@ $(document).ready(function () {
 
         dragPixelColoring = false;
         pixelTexting = true;
+        sparkles = false;
 
         // Automatically closes toolbar
         $('.tooling').first().trigger('click');
@@ -148,6 +150,7 @@ $(document).ready(function () {
 
         // We start with cell coloring so display cell coloring options in tool area
         cellOptions.show();
+        dragPixelColoring = true;
 
         // Update current color
         $('.trigger-color-picker').css('color', color);
@@ -313,6 +316,7 @@ $(document).ready(function () {
     function showCellOptions(target) {
         dragPixelColoring = true;
         pixelTexting = false;
+        sparkles = false;
 
         cellOptions.show();
 
@@ -358,6 +362,7 @@ $(document).ready(function () {
         showToolbar(false);
         $('.actions').hide();
         dragPixelColoring = false;
+        sparkles = false;
         pixelTexting = false;
         colorPicker.val('#000');
         $(pixelCanvas).css('cursor', 'unset');
@@ -372,11 +377,14 @@ $(document).ready(function () {
     */
     $('body').on('mousedown', '.active td', function (evt5) {
 
-        dragPixelColoring = !pixelTexting;
+        //dragPixelColoring = !pixelTexting;
         let activeTds = $('.active td');
         let firstCell = $(evt5.target);
 
-        if (dragPixelColoring) {
+        if (sparkles) {
+            sparkles = false;
+            firstCell.append('<span class="sparkle" style="position: relative; right: 7px; bottom: 2px;"></span><span class="sparkle" style="position: relative; top: 0px; left: 10px;"></span><span class="sparkle" style="position: relative; top: 5px; left: 2px;"></span>');
+        } else if (dragPixelColoring) {
             activeTds.css('cursor', 'cell');
 
             // Color the first cell
@@ -393,7 +401,7 @@ $(document).ready(function () {
             $('.active td').on('mouseup', function (evt3) {
                 //$(evt3.target).css('background-color', 'purple'); // Color last cell dragged to. Just a little extra magic
                 $('.active td').off('mouseenter');
-                dragPixelColoring = false;
+                //dragPixelColoring = false;
             });
         } else {
             // Enter a letter
@@ -502,5 +510,11 @@ $(document).ready(function () {
         } else {
             console.log('Should show help info about the options');
         }
+    });
+
+    $('body').on('click', '.sparkles', function () {
+        sparkles = !sparkles;
+        //dragPixelColoring = !sparkles;
+        //pixelTexting = !sparkles;
     });
 });

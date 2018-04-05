@@ -204,7 +204,7 @@ div.row.action-item * {
     margin-top: 10px;
     z-index: 9;
     position: absolute;
-    height: 300px;
+    height: 400px;
     width: 100px;
     text-align: center;
 }
@@ -218,4 +218,45 @@ div.row.action-item * {
 .action-button {
     padding: 5px;
     margin: 10px;
+}
+
+
+.sparkle {
+    /*border: 1px solid #f3f3f3;*/
+    border-radius: 50%;
+    border-top: 1px solid #000;
+    height: 2px;
+    width: 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    padding: 1px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        -webkit-transform: rotate(10deg);
+        opacity: 0;
+    }
+}
+
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: rotate(10deg);
+        opacity: 0;
+    }
 }
