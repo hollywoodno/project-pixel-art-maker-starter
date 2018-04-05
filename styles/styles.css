@@ -24,6 +24,11 @@ input[type="color"]:not(#color-picker-1) {
 }
 
 
+.glyphicon {
+    font-size: 2em;
+}
+
+
 /* Headers/Titles */
 .main-title {
     text-shadow: -1px -1px 1px #333;
@@ -82,7 +87,7 @@ table {
 table,
 tr,
 td {
-    border: 1px solid black;
+    border: 1px solid #e3e3e3;
 }
 
 
@@ -103,10 +108,19 @@ td {
 }
 
 
+/*.keyboard,
+.keyboard * {
+    border: none;
+    background-color: white;
+    box-shadow: 6px 6px 10px rgba(58, 55, 106, 0.50);
+}*/
+
+
 .letter {
-    border-radius: 100%;
+    /*border-radius: 100%;*/
     background-color: #fff;
-    border: 2px solid rgb(234, 223, 165);
+    padding: 15px;
+    /*border: 2px solid rgb(234, 223, 165);*/
 }
 
 
@@ -124,9 +138,18 @@ button {
 
 
 .actions {
-    margin-top: 10px;
+    margin-top: 0;
     text-align: center;
+    display: none;
 }
+
+
+div.row.action-item * {
+    vertical-align: middle;
+    padding: 0;
+    margin: 0 auto;
+}
+
 
 /* Preview Toolbar Area */
 .toolbar {
@@ -139,9 +162,10 @@ button {
     z-index: 9;
     position: absolute;
     color: #696969;
-    font-size: 2em;
+    /*font-size: 2em;*/
     /*transform: rotate(230deg);*/
 }
+
 
 .current-tool-container {
     left: 150px;
@@ -151,7 +175,7 @@ button {
 }
 
 
-.keyboard {
+.tool-container {
     margin: 0 auto;
     text-align: center;
     padding: 0;
@@ -159,11 +183,6 @@ button {
     empty-cells: show;
     /*table-layout: fixed;
     width: 100px;*/
-}
-
-
-.glyphicon-wrench {
-    font-size: 3.4em;
 }
 
 
@@ -196,6 +215,7 @@ button {
 }
 
 
-.tool-title {
-    margin-bottom: 5px;
+.action-button {
+    padding: 5px;
+    margin: 10px;
 }

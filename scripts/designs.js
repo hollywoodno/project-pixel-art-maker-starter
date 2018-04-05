@@ -27,6 +27,41 @@ $(document).ready(function () {
     let canvasHeight = $('#canvas-height');
     let toolbar = $('.toolbar');
     let toolbox = $('.toolbox');
+    const toolContainer = $('.tool-container');
+
+    const cellOptions = {
+        selected: false,
+        icon: $('.color-cells'),
+        html: '<div class="col-xs-auto tool-options">' +
+        '<span class="glyphicon glyphicon-tint trigger-color-picker"></span></div>',
+        show: function () {
+            $('.tool-container').empty();
+            $('.tool-container').prepend(this.html);
+            this.icon.attr('disabled', true);
+        }
+    }
+
+    const keyboardOptions = {
+        selected: false,
+        icon: $('.add-text'),
+        html: '<table id="keyboard" class="keyboard"></table>',
+        show: function () {
+            $('.tool-container').empty();
+
+            $('.tool-container').prepend(this.html);
+            this.icon.attr('disabled', true);
+
+            let keyboard = $('#keyboard');
+            for (let r = 0; r < letters.length; r++) {
+                let newRow = '<tr>';
+                for (let c = 0; c < letters[r].length; c++) {
+                    newRow += '<td class="letter">' + letters[r][c] + '</td>';
+                }
+                newRow += '<tr>';
+                keyboard.append(newRow);
+            }
+        }
+    }
 
     // --------------------------------
     /**
@@ -61,10 +96,22 @@ $(document).ready(function () {
     * @param {boolean} pixelColoring - If true, builds the keyboard  else removes it
     */
     function showKeyboard(show) {
-        if (show) {
-            $('.action-item').empty();
-            $('.action-item').prepend('<div class="col-xs-12 col-md-12 col-lg-12 current-tool text-center">' +
-                '<h6 class="tool-title">Keyboard</h6><table id="keyboard"></table></div>');
+        //$('.tool-title').html("Keyboard");
+
+        dragPixelColoring = false;
+        pixelTexting = true;
+
+        // Automatically closes toolbar
+        $('.tooling').first().trigger('click');
+
+       
+        $('.tool-container').empty();
+
+
+            //$('.action-item').empty();
+            //$('.tool-container').append('<span class="tool-title" style="font-size: 20px;">Keyboard</span>');
+            $('.tool-container').append('<table id="keyboard" class="keyboard"></table>');
+            //$('.tool-container').append('<table id="keyboard" class="text-center"></table>');
 
             let keyboard = $('#keyboard');
             for (let r = 0; r < letters.length; r++) {
@@ -76,9 +123,6 @@ $(document).ready(function () {
                 keyboard.append(newRow);
             }
 
-        } else {
-            $('.current-tool').remove();
-        }
     }
 
     /**
@@ -100,12 +144,20 @@ $(document).ready(function () {
             .removeClass('col-md-8');
 
         previewArea.find('.section-title').hide();
-        previewArea.prepend('<div class="container actions"><div class="row action-item">' +
-            '<div class="col-xs-12"><h6 class="tool-title">Color Pixels</h6>' +
-            '<span class="glyphicon glyphicon-tint trigger-color-picker" style="color: ' + color + '"></span>' +
-            '<label for="color-picker-3" class="sr-only">Pick your color</label>' +
-            '<input type="color" id="color-picker-3" class="color-picker" value="' + color + '"/>' +
-            '</div></div></div>');
+        $('.actions').show();
+
+        // We start with cell coloring so display cell coloring options in tool area
+        cellOptions.show();
+
+        // Update current color
+        $('.trigger-color-picker').css('color', color);
+
+        //previewArea.prepend('<div class="container actions"><div class="row action-item">' +
+        //    '<div class="col-xs-12"><h6 class="tool-title">Color Pixels</h6>' +
+        //    '<span class="glyphicon glyphicon-tint trigger-color-picker" style="color: ' + color + '"></span>' +
+        //    '<label for="color-picker-3" class="sr-only">Pick your color</label>' +
+        //    '<input type="color" id="color-picker-3" class="color-picker" value="' + color + '"/>' +
+        //    '</div></div></div>');
 
         // This differentiate a preview canvas from the live canvas
         pixelCanvas.addClass('active');
@@ -255,10 +307,27 @@ $(document).ready(function () {
     });
 
     /**
+    * @description Handler for showing cell options
+    * @param
+    */
+    function showCellOptions(target) {
+        dragPixelColoring = true;
+        pixelTexting = false;
+
+        cellOptions.show();
+
+        // Update current selected color
+        $('.trigger-color-picker').css('color', color);
+
+        // Automatically close toolbar after activating cell options
+        $('.tooling').first().trigger('click');
+    };
+
+    /**
     * @description Resets the live canvas and returns user to initial design state
     * @param
     */
-    $('#start-over').on('click', function () {
+    $('body').on('click', '#confirm-start-over', function (evt) {
         $('#confirmStartOverModal').modal('hide');
         $('#reset').trigger('click');
     });
@@ -275,7 +344,6 @@ $(document).ready(function () {
         // Update the view
         $('.dimension-control-group').removeAttr('disabled');
 
-        $('#start-over-button').remove();
         $('.current-tool').remove();
         pixelCanvas.removeClass('active')
         pixelCanvas.empty();
@@ -285,12 +353,16 @@ $(document).ready(function () {
             .removeClass('col-md-12')
             .addClass('col-md-8');
         hideDesignArea(false);
+        $('.tool-container').empty();
+        $('.tooling').trigger('click');
         showToolbar(false);
-
+        $('.actions').hide();
+        dragPixelColoring = false;
+        pixelTexting = false;
         colorPicker.val('#000');
         $(pixelCanvas).css('cursor', 'unset');
         canvasWidth.focus();
-
+        $('.action-button').removeAttr('disabled');
         enableCanvasBuild();
     });
 
@@ -408,19 +480,27 @@ $(document).ready(function () {
         }
     });
 
-    // WIP: TODO: finish implementing toolbar input text tool for live pixel grid
-    $('.text-tool').on('click', function (evt) {
-        if (pixelTexting) {
-            $('.text-tool').css('color', 'grey');
-            pixelTexting = false;
-            dragPixelColoring = true;
-            showKeyboard(false);
+    /**
+    * @description While in active pixel coloring mode, displays tool options based on selected tool
+    * @param {Event} - The object to which event was triggered
+    */
+    $('.action-button').on('click', function (evt) {
+        // Determine which action tool to display in tool container
+        if ($(this).hasClass('color-cells')) {
+            console.log('Should show cell color options');
+            $('.action-button').removeAttr('disabled');
+            $(this).attr('disabled', true);
+            showCellOptions($(this));
+        } else if ($(this).hasClass('add-text')) {
+            console.log('Should show keyboard');
+            $('.action-button').removeAttr('disabled');
+            $(this).attr('disabled', true);
+            showKeyboard();
+        } else if ($(this).hasClass('start-over')) {
+            console.log('Should start over');
+            $('#confirmStartOverModal').modal('show');
         } else {
-            $('.text-tool').css('color', 'green');
-            dragPixelColoring = false;
-            pixelTexting = true;
-            $('.tooling').first().trigger('click');
-            showKeyboard(true);
+            console.log('Should show help info about the options');
         }
     });
 });

@@ -31,25 +31,21 @@
         <div class="toolbar">
 
             <div class="toolbox tooling">
-                <h5>My Toolbar</h5>
-                <label for="color-picker-2" class="sr-only">Pick your color</label>
-                <p>
-                    <input type="color" id="color-picker-2" class="color-picker" placeholder="Color Picker" />
-                    <span class="glyphicon glyphicon-tint trigger-color-picker"></span>
-                </p>
-                <p class="text-tool"><span class="glyphicon glyphicon-text-size"></span></p>
-                <p class="reset-canvas"
-                   id="start-over-button"
-                   data-toggle="modal"
-                   data-target="#confirmStartOverModal">
-                    <span class="glyphicon glyphicon-trash reset-canvas"></span>
-                </p>
-                <!--<button class="btn reset-canvas"
-                        id="start-over-button"
-                        data-toggle="modal"
-                        data-target="#confirmStartOverModal">
-                    Start Over
-                </button>-->
+                <button class="btn btn-default action-button color-cells">
+                    <span class="glyphicon glyphicon-th-large cell-options-icon"></span>
+                </button>
+                <button class="btn btn-default action-button add-text">
+                    <!-- text-tool -->
+                    <span class="glyphicon glyphicon-text-size"></span>
+                </button>
+                <!-- reset-canvas  -->
+                <button class="btn btn-default action-button start-over"
+                        id="start-over-button">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                <button class="btn btn-default action-button">
+                    <span class="glyphicon glyphicon-info-sign "></span>
+                </button>
             </div>
 
             <div class="tool-icon tooling">
@@ -115,8 +111,15 @@
 
                 <!-- TODO: Add section to explain how to use features -->
                 <h2 class="section-title">Preview</h2>
-
+                <div class="container actions">
+                    <div class="row action-item" style="background-color: #eee; padding: 7px; margin: 0 auto;">
+                        <div class="col-xs-12 tool-container">
+                        </div>
+                    </div>
+                </div>
                 <table id="pixel-canvas"></table>
+                <label for="color-picker-3" class="sr-only">Pick your color</label>
+                <input type="color" id="color-picker-3" class="color-picker">
 
             </div>
 
@@ -149,7 +152,7 @@
 
                 <div class="modal-footer">
 
-                    <button type="button" id="start-over" class="btn btn-primary">Start Over</button>
+                    <button type="button" id="confirm-start-over" class="btn btn-primary">Start Over</button>
 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 
