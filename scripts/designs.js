@@ -383,7 +383,20 @@ $(document).ready(function () {
 
         if (sparkles) {
             sparkles = false;
-            firstCell.append('<span class="sparkle" style="position: relative; right: 7px; bottom: 2px;"></span><span class="sparkle" style="position: relative; top: 0px; left: 10px;"></span><span class="sparkle" style="position: relative; top: 5px; left: 2px;"></span>');
+            //const left = $(this).position().left;
+            //const top = $(this).position().top;
+            const left = evt5.originalEvent.clientX + 'px';
+            const top = evt5.originalEvent.clientY + 'px';
+            console.log('postion: ', left + ' ' + top);
+            console.log('evt: ', evt5);
+            firstCell.append('<span class="sparkle" style="position: absolute; overflow: hidden; top: 0; left: 10px;     animation: spin 2s linear infinite reverse;"></span>' +
+                '<span class="sparkle" style="position: absolute; top: 8; left: 7px; overflow: hidden;     animation: reverseSpin 2s linear infinite reverse; "></span>' +
+                '<span class="sparkle" style="position: absolute; top: 0; left: 2px; overflow: hidden;"></span>' +
+
+                '<span class="sparkle" style="position: absolute;   overflow: hidden;   animation: reverseSpin 2s linear infinite; top: 2px; left: 7px;"></span>' +
+                '<span class="sparkle" style="position: absolute;   overflow: hidden;   animation: spin 2s linear infinite; top: 11; right: 10px;"></span>' +
+                '<span class="sparkle" style="position: absolute; top: 0;  overflow: hidden;right: 2px;"></span>'
+            );
         } else if (dragPixelColoring) {
             activeTds.css('cursor', 'cell');
 

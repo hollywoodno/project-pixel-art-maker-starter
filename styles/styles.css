@@ -74,13 +74,13 @@ input[type="color"]:not(#color-picker-1) {
 
 
 table {
-    margin: 20px auto;
+    margin: 10px auto 0 auto;
     border-collapse: collapse;
-    padding: 20px;
-    empty-cells: show;
-    table-layout: fixed;
-    width: 200px;
-    /*max-width: 100vh;*/
+    /*padding: 20px;*/
+    /*empty-cells: show;*/
+    /*table-layout: fixed;*/
+    /*width: 200px;*/
+    max-width: 100vh;
 }
 
 
@@ -91,11 +91,17 @@ td {
 }
 
 
+tr {
+    height: 2em;
+}
+
+
 td {
-    width: 25px;
-    height: 25px;
+    width: 2em;
+    /*height: 25px;*/
     margin: 0;
     padding: 0;
+    position: relative;
     /*min-width: 80%;*/
     /*min-height: 80%;*/
 }
@@ -104,6 +110,8 @@ td {
 .pixel-text, .letter {
     cursor: text;
     text-transform: uppercase;
+    position: relative;
+    font-size: 10px;
     /*     color: salmon; */
 }
 
@@ -114,6 +122,12 @@ td {
     background-color: white;
     box-shadow: 6px 6px 10px rgba(58, 55, 106, 0.50);
 }*/
+
+
+.keyboard tr {
+
+height: 0;
+}
 
 
 .letter {
@@ -223,16 +237,22 @@ div.row.action-item * {
 
 .sparkle {
     /*border: 1px solid #f3f3f3;*/
-    border-radius: 50%;
-    border-top: 1px solid #000;
-    height: 2px;
-    width: 2px;
+    border-radius: 100%;
+    border-top: 1px solid #e3e3e3;
+    /*height: 2px;
+    width: 2px;*/
     background-color: #bbb;
     border-radius: 50%;
     display: inline-block;
     padding: 1px;
     -webkit-animation: spin 2s linear infinite; /* Safari */
-    animation: spin 2s linear infinite;
+
+}
+
+
+.rotating-border {
+    border: 2px solid green;
+    animation: flip 2s linear infinite;
 }
 
 /* Safari */
@@ -240,11 +260,13 @@ div.row.action-item * {
     0% {
         -webkit-transform: rotate(0deg);
         opacity: 1;
+        border-top: red;
     }
 
     100% {
         -webkit-transform: rotate(10deg);
         opacity: 0;
+        border-top: green;
     }
 }
 
@@ -253,10 +275,42 @@ div.row.action-item * {
     0% {
         transform: rotate(0deg);
         opacity: 1;
+        margin: 0;
+        background-color: deeppink;
     }
 
     100% {
-        transform: rotate(10deg);
+        transform: rotate(60deg);
         opacity: 0;
+        margin: 5px;
+        background-color: rebeccapurple;
+    }
+}
+
+
+@keyframes reverseSpin {
+    0% {
+        transform: rotate(90deg);
+        opacity: 1;
+        margin: 0;
+    }
+
+    100% {
+        transform: rotate(-160deg);
+        opacity: 0;
+        margin: 5px;
+    }
+}
+
+
+@keyframes flip {
+    0% {
+        border: 0px solid red;
+        border-radius: 100%;
+    }
+
+    100% {
+        border: .5px solid blue;
+        border-radius: 100%;
     }
 }
