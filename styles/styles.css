@@ -238,13 +238,19 @@ div.row.action-item * {
 .sparkle {
     /*border: 1px solid #f3f3f3;*/
     border-radius: 100%;
-    border-top: 1px solid #e3e3e3;
-    /*height: 2px;
-    width: 2px;*/
+
+    /*lines*/
+    /*border-top: 10px solid #e3e3e3;*/
+    
+    /*large dots*/
+    /*height: 7px;*/
+    /*width: 7px;*/
+
     background-color: #bbb;
-    border-radius: 50%;
     display: inline-block;
-    padding: 1px;
+
+    /*gives sparkle volume*/
+    padding: 2px;
     -webkit-animation: spin 2s linear infinite; /* Safari */
 
 }
@@ -281,7 +287,7 @@ div.row.action-item * {
 
     100% {
         transform: rotate(60deg);
-        opacity: 0;
+        opacity: 1;
         margin: 5px;
         background-color: rebeccapurple;
     }
@@ -297,8 +303,20 @@ div.row.action-item * {
 
     100% {
         transform: rotate(-160deg);
-        opacity: 0;
+        opacity: 1;
         margin: 5px;
+    }
+}
+
+@keyframes clean {
+    0% {
+        /*transform: rotate(90deg);*/
+        opacity: 0;
+    }
+
+    100% {
+        /*transform: rotate(-160deg);*/
+        opacity: 1;
     }
 }
 
