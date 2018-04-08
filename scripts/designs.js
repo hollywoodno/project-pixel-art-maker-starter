@@ -1,9 +1,9 @@
 $(document).ready(function () {
     'use strict';
 
-    const letters = [['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'],
+    let letters = [['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'],
     ['j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r'],
-    ['s', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' ']];
+    ['s', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'ABC']];
 
     let width;
     let height;
@@ -46,7 +46,7 @@ $(document).ready(function () {
             this.selector.html(text);
         };
         this.removeText = function () {
-            this.selector.html('');
+            this.selector.text('');
         }
     }
 
@@ -344,14 +344,40 @@ $(document).ready(function () {
     * @param
     */
     $('body').on('click', '#keyboard td', function (evt) {
-        // Deselect current letter
-        if (letter) {
-            letter.css('background-color', '#fff');
-        }
+        debugger;
+        let pixelLetters = $('.letter');
 
-        // Assign new letter
+        if ($(evt.target).text() === 'abc') {
+            pixelLetters.not(":last").css('text-transform', 'lowercase');
+            $.each(pixelLetters, function (index, value) {
+                let currentText = $(pixelLetters[index]).text();
+                $(pixelLetters[index]).text(currentText.toLowerCase());
+
+                if (index === pixelLetters.length - 1) {
+                    $(pixelLetters[index]).text(currentText.toUpperCase());
+                }
+            });
+
+        } else if ($(evt.target).text() === 'ABC') {
+            $('.letter').not(":last").css('text-transform', 'uppercase');
+            $.each(pixelLetters, function (index, value) {
+                let currentText = $(pixelLetters[index]).text();
+                $(pixelLetters[index]).text(currentText.toUpperCase());
+
+                if (index === pixelLetters.length - 1) {
+                    $(pixelLetters[index]).text(currentText.toLowerCase());
+                }
+            });
+        } else {
+            // Deselect current letter
+            if (letter) {
+                letter.css('background-color', '#fff');
+            }
+
         letter = $(evt.target);
-        letter.css('background-color', '#eee');
+            // Assign new letter
+            letter.css('background-color', '#eee');
+        }
     });
 
     /**
@@ -469,9 +495,12 @@ $(document).ready(function () {
                     activeTds.css('cursor', 'text');
                     activeTds.addClass('pixel-text');
                     cell.selector.addClass('pixel-text');
-
                     if (letter) {
-                        cell.addText(letter.html());
+                        console.log('letter text: ', letter.text());
+                        if (letter.text() !== 'abc' && letter.text() !== 'ABC') {
+                            cell.addText(letter.text());
+                            console.log('THIS IS THE TEXT IM PUTTING IN LETTER: ', letter.prop('outerHTML'));
+                        }
                     }
                     break;
                 case 'erase':
