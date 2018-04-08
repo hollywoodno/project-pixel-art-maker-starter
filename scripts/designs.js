@@ -29,7 +29,6 @@ $(document).ready(function () {
     let toolContainer = $('.tool-container');
 
     function Cell(element) {
-        console.log('console logging element: ', element);
         this.html = element;
         this.selector = $(element);
         this.color = function () {
@@ -37,7 +36,8 @@ $(document).ready(function () {
                 .addClass('colored');
         };
         this.uncolor = function () {
-            this.selector.empty();
+            // Remove the sparkles and cell color
+            this.selector.find('span').remove();
             this.selector.css('background-color', '#fff')
                 .removeClass('colored');
         };
@@ -95,7 +95,6 @@ $(document).ready(function () {
         }
     }
 
-
     let keyboardOptions = {
         icon: $('.add-text'),
         option: this.texting,
@@ -125,8 +124,8 @@ $(document).ready(function () {
             this.resetOptions();
             debugger;
             selector.parent().first().attr('disabled', true);
-            
-           if (selector.hasClass('color-text') || selector.hasClass('cell-tool')) {
+
+            if (selector.hasClass('color-text') || selector.hasClass('cell-tool')) {
                 if (selector.hasClass('cell-tool')) {
                     $('.color-text').parent().first().attr('disabled', true);
                 }
@@ -356,21 +355,6 @@ $(document).ready(function () {
     });
 
     /**
-    * @description Handler for showing cell options
-    * @param
-    */
-    //function showCellOptions(target) {
-    //    cellOptions.show();
-    //    cellOptions.setOption($('.color-cell'));
-
-    //    // Update current selected color
-    //    $('.trigger-color-picker').css('color', color);
-
-    //    // Automatically close toolbar after activating cell options
-    //    $('.tooling').first().trigger('click');
-    //};
-
-    /**
     * @description Resets the live canvas and returns user to initial design state
     * @param
     */
@@ -385,14 +369,11 @@ $(document).ready(function () {
     */
     $('body').on('click', '#confirm-reset', function () {
         $('#confirmResetModal').modal('hide');
-        debugger;
         const cells = pixelCanvas.find('td')
         cells.html('');
         cells.empty();
 
         cells.css('background-color', '#fff');
-        
-        //cells.empty();
     });
 
     /**
@@ -435,7 +416,6 @@ $(document).ready(function () {
     $('body').on('mousedown', '.active td', function (evt5) {
         let activeTds = $('.active td');
         let cell = new Cell(this);
-        console.log('option: ', cellOptions.option);
         if (activity === "pixelColoring") {
             switch (cellOptions.option.name) {
                 case 'sparkles':
@@ -464,10 +444,9 @@ $(document).ready(function () {
                     });
                     break;
                 case 'erase':
-                    console.log('should erase');
+                    debugger;
                     cell.uncolor();
                     $('.active td').on('mouseenter', function (evt2) {
-
                         // we want to make sure to get just the td and not it's child (span sparkle element for example)
                         let targetCell = new Cell(evt2.currentTarget);
                         targetCell.uncolor();
@@ -496,7 +475,6 @@ $(document).ready(function () {
                     }
                     break;
                 case 'erase':
-                    console.log("should be erasing");
                     cell.removeText();
             }
 
