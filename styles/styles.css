@@ -111,7 +111,7 @@ td {
     cursor: text;
     text-transform: uppercase;
     position: relative;
-    font-size: 10px;
+    /*font-size: 10px;*/
     /*     color: salmon; */
 }
 

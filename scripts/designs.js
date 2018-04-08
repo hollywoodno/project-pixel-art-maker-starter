@@ -9,7 +9,7 @@ $(document).ready(function () {
     let height;
     let letter;
     let color = '#000000';
-    let pixelTexting = false;
+    let activity;
     let toolbarIsOpen = false;
 
     // Previewing pixel canvas
@@ -28,53 +28,6 @@ $(document).ready(function () {
     let toolbox = $('.toolbox');
     let toolContainer = $('.tool-container');
 
-    let cellOptions = {
-        icon: $('.color-cells'),
-        option: this.dragPixelColoring,
-        sparkles: { name: 'sparkles', selected: false, selector: $('.sparkles') },
-        isErasing: { name: 'erase', selected: false, selector: $('.erase') },
-        pixelTexting: { name: 'text', selected: false, selector: $('.pixelTexting') },
-        dragPixelColoring: { name: 'dragPixelColoring', 'selected': true, selector: $('.color-cell') },
-        html: '<div class="col-xs-auto tool-options">' +
-        '<button style="background-color: #b03a2e; margin-right: 10px;"><span class="glyphicon glyphicon-th-large" style="display: inline-block; margin: 10px;"></span></button>' +
-        '<button class="btn btn-default tool-button" style="margin: 5px;"><span class="glyphicon glyphicon-tint trigger-color-picker color-cell tool-option" style="display: inline-block; margin: 10px;"></span></button>' +
-        '<button class="btn btn-default tool-button" style="margin: 5px;"><span class="glyphicon glyphicon-asterisk sparkles tool-option" style="display: inline-block; margin: 10px;"></span></button>' +
-        '<button class="btn btn-default tool-button" style="margin: 5px;"><span class="glyphicon glyphicon-erase erase tool-option" style="display: inline-block; margin: 10px;"></span></button></div>',
-        show: function () {
-            toolContainer.empty();
-            toolContainer.prepend(this.html);
-            this.icon.attr('disabled', true);
-        },
-        setOption: function (selector) {
-            this.resetOptions();
-            selector.parent().first().attr('disabled', true);
-
-            if (selector.hasClass('sparkles')) {
-                this.sparkles.selected = true;
-                this.option = this.sparkles;
-            } else if (selector.hasClass('color-cell')) {
-                this.dragPixelColoring.selected = true;
-                this.option = this.dragPixelColoring;
-            } else if (selector.hasClass('pixelTexting')) {
-                this.pixelTexting.selected = true;
-                this.option = this.pixelTexting;
-            } else if (selector.hasClass('erase')) {
-                this.isErasing.selected = true;
-                this.option = this.isErasing;
-            } else {
-                console.log('invalid cell option');
-            }
-        },
-        resetOptions: function () {
-            $('.tool-button').attr('disabled', false);
-            this.isErasing.selected = false;
-            this.pixelTexting.selected = false;
-            this.dragPixelColoring.selected = false;
-            this.sparkles.selected = false;
-
-        }
-    }
-
     function Cell(element) {
         console.log('console logging element: ', element);
         this.html = element;
@@ -87,16 +40,74 @@ $(document).ready(function () {
             this.selector.empty();
             this.selector.css('background-color', '#fff')
                 .removeClass('colored');
+        };
+        this.addText = function (text) {
+            this.selector.css('color', color);
+            this.selector.html(text);
+        };
+        this.removeText = function () {
+            this.selector.html('');
         }
     }
 
-    let keyboardOptions = {
-        selected: false,
-        icon: $('.add-text'),
-        html: '<table id="keyboard" class="keyboard"></table>',
+    let cellOptions = {
+        icon: $('.color-cells'),
+        option: this.dragPixelColoring,
+        sparkles: { name: 'sparkles', selected: false, selector: $('.sparkles') },
+        isErasing: { name: 'erase', selected: false, selector: $('.erase') },
+        dragPixelColoring: { name: 'dragPixelColoring', 'selected': true, selector: $('.color-cell') },
+        html: '<div class="col-xs-auto tool-options">' +
+        '<button style="background-color: #b03a2e; margin-right: 10px;"><span class="glyphicon glyphicon-th-large cell-tool" style="display: inline-block; margin: 10px;"></span></button>' +
+        '<button class="btn btn-default tool-button" style="margin: 5px;"><span class="glyphicon glyphicon-tint trigger-color-picker color-cell tool-option" style="display: inline-block; margin: 10px;"></span></button>' +
+        '<button class="btn btn-default tool-button" style="margin: 5px;"><span class="glyphicon glyphicon-asterisk sparkles tool-option" style="display: inline-block; margin: 10px;"></span></button>' +
+        '<button class="btn btn-default tool-button" style="margin: 5px;"><span class="glyphicon glyphicon-erase erase tool-option" style="display: inline-block; margin: 10px;"></span></button></div>',
         show: function () {
             toolContainer.empty();
+            toolContainer.prepend(this.html);
+            this.icon.attr('disabled', true);
+            this.setOption(this.dragPixelColoring.selector);
+        },
+        setOption: function (selector) {
+            this.resetOptions();
+            selector.parent().first().attr('disabled', true);
 
+            if (selector.hasClass('sparkles')) {
+                this.sparkles.selected = true;
+                this.option = this.sparkles;
+            } else if (selector.hasClass('color-cell') || selector.hasClass('cell-tool')) {
+                if (selector.hasClass('cell-tool')) {
+                    $('.color-cell').parent().first().attr('disabled', true);
+                }
+                this.dragPixelColoring.selected = true;
+                this.option = this.dragPixelColoring;
+            } else if (selector.hasClass('erase')) {
+                this.isErasing.selected = true;
+                this.option = this.isErasing;
+            } else {
+                console.log('invalid cell option');
+            }
+        },
+        resetOptions: function () {
+            $('.tool-button').attr('disabled', false);
+            this.isErasing.selected = false;
+            this.dragPixelColoring.selected = false;
+            this.sparkles.selected = false;
+        }
+    }
+
+
+    let keyboardOptions = {
+        icon: $('.add-text'),
+        option: this.texting,
+        texting: { name: 'colorText', selected: false, selector: $('.color-text') },
+        isErasing: { name: 'erase', selected: false, selector: $('.erase') },
+        html: '<div class="col-xs-auto tool-options">' +
+        '<button style="background-color: #b03a2e; margin-right: 10px;"><span class="glyphicon glyphicon-text-size cell-tool" style="display: inline-block; margin: 10px;"></span></button>' +
+        '<table id="keyboard" class="keyboard" style="display: inline-block;"></table>' +
+        '<button class="btn btn-default tool-button" style="margin: 5px;"><span class="glyphicon glyphicon-tint trigger-color-picker color-text tool-option" style="display: inline-block; margin: 10px;"></span></button>' +
+        '<button class="btn btn-default tool-button" style="margin: 5px;"><span class="glyphicon glyphicon-erase erase" style="display: inline-block; margin: 10px;"></span></button></div>',
+        show: function () {
+            toolContainer.empty();
             toolContainer.prepend(this.html);
             this.icon.attr('disabled', true);
 
@@ -109,7 +120,31 @@ $(document).ready(function () {
                 newRow += '<tr>';
                 keyboard.append(newRow);
             }
+        },
+        setOption: function (selector) {
+            this.resetOptions();
+            debugger;
+            selector.parent().first().attr('disabled', true);
+            
+           if (selector.hasClass('color-text') || selector.hasClass('cell-tool')) {
+                if (selector.hasClass('cell-tool')) {
+                    $('.color-text').parent().first().attr('disabled', true);
+                }
+                this.texting.selected = true;
+                this.option = this.texting;
+            } else if (selector.hasClass('erase')) {
+                this.isErasing.selected = true;
+                this.option = this.isErasing;
+            } else {
+                console.log('invalid keyboard option');
+            }
+        },
+        resetOptions: function () {
+            $('.tool-button').attr('disabled', false);
+            this.texting.selected = false;
+            this.isErasing.selected = false;
         }
+
     }
 
     // --------------------------------
@@ -145,13 +180,6 @@ $(document).ready(function () {
     */
     function showKeyboard(show) {
 
-        dragPixelColoring = false;
-        pixelTexting = true;
-        sparkles = false;
-
-        // Automatically closes toolbar
-        $('.tooling').first().trigger('click');
-        toolContainer.empty();
 
         toolContainer.append('<table id="keyboard" class="keyboard"></table>');
 
@@ -191,6 +219,7 @@ $(document).ready(function () {
         // We start with cell coloring so display cell coloring options in tool area
         cellOptions.show();
         cellOptions.setOption($('.color-cell'));
+        activity = "pixelColoring";
 
         // Update current color
         $('.trigger-color-picker').css('color', color);
@@ -330,16 +359,16 @@ $(document).ready(function () {
     * @description Handler for showing cell options
     * @param
     */
-    function showCellOptions(target) {
-        cellOptions.show();
-        cellOptions.setOption($('.color-cell'));
+    //function showCellOptions(target) {
+    //    cellOptions.show();
+    //    cellOptions.setOption($('.color-cell'));
 
-        // Update current selected color
-        $('.trigger-color-picker').css('color', color);
+    //    // Update current selected color
+    //    $('.trigger-color-picker').css('color', color);
 
-        // Automatically close toolbar after activating cell options
-        $('.tooling').first().trigger('click');
-    };
+    //    // Automatically close toolbar after activating cell options
+    //    $('.tooling').first().trigger('click');
+    //};
 
     /**
     * @description Resets the live canvas and returns user to initial design state
@@ -389,58 +418,72 @@ $(document).ready(function () {
     $('body').on('mousedown', '.active td', function (evt5) {
         let activeTds = $('.active td');
         let cell = new Cell(this);
-
+        debugger;
         console.log('option: ', cellOptions.option);
-        switch (cellOptions.option.name) {
-            case 'sparkles':
-                cell.selector.append('<span class="sparkle" style="position: absolute; overflow: hidden; top: 0; left: 10px; animation: spin 2s linear infinite reverse;"></span>' +
-                    '<span class="sparkle" style="position: absolute; top: 8; left: 7px; overflow: hidden; animation: reverseSpin 2s linear infinite reverse;"></span>' +
-                    '<span class="sparkle" style="position: absolute; top: 0; left: 2px; overflow: hidden;"></span>' +
-                    '<span class="sparkle" style="position: absolute; overflow: hidden; animation: reverseSpin 2s linear infinite; top: 2px; left: 7px;"></span>' +
-                    '<span class="sparkle" style="position: absolute; overflow: hidden; animation: spin 2s linear infinite; top: 11; right: 10px;"></span>' +
-                    '<span class="sparkle" style="position: absolute; top: 0;  overflow: hidden;right: 2px;"></span>'
-                );
-                break;
-            case 'dragPixelColoring':
-                activeTds.css('cursor', 'cell');
-                cell.color();
+        if (activity === "pixelColoring") {
+            switch (cellOptions.option.name) {
+                case 'sparkles':
+                    cell.selector.append('<span class="sparkle" style="position: absolute; overflow: hidden; top: 0; left: 10px; animation: spin 2s linear infinite reverse;"></span>' +
+                        '<span class="sparkle" style="position: absolute; top: 8; left: 7px; overflow: hidden; animation: reverseSpin 2s linear infinite reverse;"></span>' +
+                        '<span class="sparkle" style="position: absolute; top: 0; left: 2px; overflow: hidden;"></span>' +
+                        '<span class="sparkle" style="position: absolute; overflow: hidden; animation: reverseSpin 2s linear infinite; top: 2px; left: 7px;"></span>' +
+                        '<span class="sparkle" style="position: absolute; overflow: hidden; animation: spin 2s linear infinite; top: 11; right: 10px;"></span>' +
+                        '<span class="sparkle" style="position: absolute; top: 0;  overflow: hidden;right: 2px;"></span>'
+                    );
+                    break;
+                case 'dragPixelColoring':
+                    activeTds.css('cursor', 'cell');
+                    cell.color();
 
-                // As we enter new cells, color them
-                $('.active td').on('mouseenter', function (evt2) {
-                    let targetCell = new Cell(evt2.currentTarget);
-                    targetCell.color()
-                });
+                    // As we enter new cells, color them
+                    $('.active td').on('mouseenter', function (evt2) {
+                        let targetCell = new Cell(evt2.currentTarget);
+                        targetCell.color()
+                    });
 
-                // Terminates the coloring of new cell, by by removing the listener
-                $('.active td').on('mouseup', function (evt3) {
-                    //$(evt3.target).css('background-color', 'purple'); // Color last cell dragged to. Just a little extra magic
-                    $('.active td').off('mouseenter');
-                });
-                break;
-            case 'erase':
-                console.log('should erase');
-                cell.uncolor();
-                $('.active td').on('mouseenter', function (evt2) {
+                    // Terminates the coloring of new cell, by by removing the listener
+                    $('.active td').on('mouseup', function (evt3) {
+                        //$(evt3.target).css('background-color', 'purple'); // Color last cell dragged to. Just a little extra magic
+                        $('.active td').off('mouseenter');
+                    });
+                    break;
+                case 'erase':
+                    console.log('should erase');
+                    cell.uncolor();
+                    $('.active td').on('mouseenter', function (evt2) {
 
-                    // we want to make sure to get just the td and not it's child (span sparkle element for example)
-                    let targetCell = new Cell(evt2.currentTarget);
-                    targetCell.uncolor();
-                });
+                        // we want to make sure to get just the td and not it's child (span sparkle element for example)
+                        let targetCell = new Cell(evt2.currentTarget);
+                        targetCell.uncolor();
+                    });
 
-                // Terminates the coloring of new cell, by by removing the listener
-                $('.active td').on('mouseup', function (evt3) {
-                    //$(evt3.target).css('background-color', 'purple'); // Color last cell dragged to. Just a little extra magic
-                    $('.active td').off('mouseenter');
-                });
-                break;
-            case 'pixelTexting':
-                // Enter a letter
-                activeTds.css('cursor', 'text');
-                activeTds.addClass('pixel-text');
-                cell.selector.addClass('pixel-text').html(letter.html());
-                break;
-            default:
-                console.log('invalid option');
+                    // Terminates the coloring of new cell, by by removing the listener
+                    $('.active td').on('mouseup', function (evt3) {
+                        //$(evt3.target).css('background-color', 'purple'); // Color last cell dragged to. Just a little extra magic
+                        $('.active td').off('mouseenter');
+                    });
+                    break;
+
+                default:
+                    console.log('invalid option');
+            }
+        } else {
+            // Enter a letter
+            switch (keyboardOptions.option.name) {
+                case 'colorText':
+                    activeTds.css('cursor', 'text');
+                    activeTds.addClass('pixel-text');
+                    cell.selector.addClass('pixel-text');
+
+                    if (letter) {
+                        cell.addText(letter.html());
+                    }
+                    break;
+                case 'erase':
+                    console.log("should be erasing");
+                    cell.removeText();
+            }
+
         }
 
     });
@@ -519,24 +562,37 @@ $(document).ready(function () {
     * @param {Event} - The object to which event was triggered
     */
     $('.action-button').on('click', function (evt) {
+
+        $('.tooling').first().trigger('click');
         // Determine which action tool to display in tool container
         if ($(this).hasClass('color-cells')) {
             $('.action-button').removeAttr('disabled');
             $(this).attr('disabled', true);
-            showCellOptions($(this));
+            activity = "pixelColoring";
+            cellOptions.show();
         } else if ($(this).hasClass('add-text')) {
             $('.action-button').removeAttr('disabled');
             $(this).attr('disabled', true);
-            showKeyboard();
+            activity = "pixelTexting";
+            keyboardOptions.show();
+            keyboardOptions.setOption($('.color-text'));
         } else if ($(this).hasClass('start-over')) {
+            activity = "startOver";
             $('#confirmStartOverModal').modal('show');
         } else {
             console.log('Should show help info about the options');
         }
+
+        $('.trigger-color-picker').css('color', color);
     });
 
     $('body').on('click', '.tool-options span', function (evt) {
         let target = $(evt.target);
-        cellOptions.setOption(target);
+
+        if (activity === "pixelColoring") {
+            cellOptions.setOption(target);
+        } else {
+            keyboardOptions.setOption(target);
+        }
     });
 });
