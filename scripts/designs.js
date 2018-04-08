@@ -26,47 +26,52 @@ $(document).ready(function () {
     let canvasHeight = $('#canvas-height');
     let toolbar = $('.toolbar');
     let toolbox = $('.toolbox');
-    const toolContainer = $('.tool-container');
+    let toolContainer = $('.tool-container');
 
-    const cellOptions = {
+    let cellOptions = {
         icon: $('.color-cells'),
-        sparkles: false,
-        isErasing: false,
-        pixelTexting: false,
-        dragPixelColoring: true,
+        option: this.dragPixelColoring,
+        sparkles: { name: 'sparkles', selected: false, selector: $('.sparkles') },
+        isErasing: { name: 'erase', selected: false, selector: $('.erase') },
+        pixelTexting: { name: 'text', selected: false, selector: $('.pixelTexting') },
+        dragPixelColoring: { name: 'dragPixelColoring', 'selected': true, selector: $('.color-cell') },
         html: '<div class="col-xs-auto tool-options">' +
-        '<span class="glyphicon glyphicon-tint trigger-color-picker tool-option" style="display: inline-block; margin: 5px;"></span>' +
-        '<span class="glyphicon glyphicon-asterisk sparkles tool-option" style="display: inline-block; margin: 5px;"></span>' +
-        '<span class="glyphicon glyphicon-erase erase tool-option" style="display: inline-block; margin: 5px;"></span></div>',
+        '<button style="background-color: #b03a2e; margin-right: 10px;"><span class="glyphicon glyphicon-th-large" style="display: inline-block; margin: 10px;"></span></button>' +
+        '<button class="btn btn-default tool-button" style="margin: 5px;"><span class="glyphicon glyphicon-tint trigger-color-picker color-cell tool-option" style="display: inline-block; margin: 10px;"></span></button>' +
+        '<button class="btn btn-default tool-button" style="margin: 5px;"><span class="glyphicon glyphicon-asterisk sparkles tool-option" style="display: inline-block; margin: 10px;"></span></button>' +
+        '<button class="btn btn-default tool-button" style="margin: 5px;"><span class="glyphicon glyphicon-erase erase tool-option" style="display: inline-block; margin: 10px;"></span></button></div>',
         show: function () {
-            $('.tool-container').empty();
-            $('.tool-container').prepend(this.html);
+            toolContainer.empty();
+            toolContainer.prepend(this.html);
             this.icon.attr('disabled', true);
         },
-        setOption: function (option) {
+        setOption: function (selector) {
             this.resetOptions();
-            switch (option) {
-                case 'sparkles':
-                    this.sparkles = true;
-                    break;
-                case 'dragPixelColoring':
-                    this.dragPixelColoring = true;
-                    break;
-                case 'pixelTexting':
-                    this.pixelTexting = true;
-                    break;
-                case 'isErasing':
-                    this.isErasing = true;
-                    break;
-                default:
-                    console.log('invalid cell option');
+            selector.parent().first().attr('disabled', true);
+
+            if (selector.hasClass('sparkles')) {
+                this.sparkles.selected = true;
+                this.option = this.sparkles;
+            } else if (selector.hasClass('color-cell')) {
+                this.dragPixelColoring.selected = true;
+                this.option = this.dragPixelColoring;
+            } else if (selector.hasClass('pixelTexting')) {
+                this.pixelTexting.selected = true;
+                this.option = this.pixelTexting;
+            } else if (selector.hasClass('erase')) {
+                this.isErasing.selected = true;
+                this.option = this.isErasing;
+            } else {
+                console.log('invalid cell option');
             }
         },
         resetOptions: function () {
-            this.isErasing = false;
-            this.pixelTexting = false;
-            this.dragPixelColoring = false;
-            this.sparkles = false;
+            $('.tool-button').attr('disabled', false);
+            this.isErasing.selected = false;
+            this.pixelTexting.selected = false;
+            this.dragPixelColoring.selected = false;
+            this.sparkles.selected = false;
+
         }
     }
 
@@ -85,14 +90,14 @@ $(document).ready(function () {
         }
     }
 
-    const keyboardOptions = {
+    let keyboardOptions = {
         selected: false,
         icon: $('.add-text'),
         html: '<table id="keyboard" class="keyboard"></table>',
         show: function () {
-            $('.tool-container').empty();
+            toolContainer.empty();
 
-            $('.tool-container').prepend(this.html);
+            toolContainer.prepend(this.html);
             this.icon.attr('disabled', true);
 
             let keyboard = $('#keyboard');
@@ -146,19 +151,19 @@ $(document).ready(function () {
 
         // Automatically closes toolbar
         $('.tooling').first().trigger('click');
-        $('.tool-container').empty();
+        toolContainer.empty();
 
-            $('.tool-container').append('<table id="keyboard" class="keyboard"></table>');
+        toolContainer.append('<table id="keyboard" class="keyboard"></table>');
 
-            let keyboard = $('#keyboard');
-            for (let r = 0; r < letters.length; r++) {
-                let newRow = '<tr>';
-                for (let c = 0; c < letters[r].length; c++) {
-                    newRow += '<td class="letter">' + letters[r][c] + '</td>';
-                }
-                newRow += '<tr>';
-                keyboard.append(newRow);
+        let keyboard = $('#keyboard');
+        for (let r = 0; r < letters.length; r++) {
+            let newRow = '<tr>';
+            for (let c = 0; c < letters[r].length; c++) {
+                newRow += '<td class="letter">' + letters[r][c] + '</td>';
             }
+            newRow += '<tr>';
+            keyboard.append(newRow);
+        }
 
     }
 
@@ -185,6 +190,7 @@ $(document).ready(function () {
 
         // We start with cell coloring so display cell coloring options in tool area
         cellOptions.show();
+        cellOptions.setOption($('.color-cell'));
 
         // Update current color
         $('.trigger-color-picker').css('color', color);
@@ -325,8 +331,8 @@ $(document).ready(function () {
     * @param
     */
     function showCellOptions(target) {
-
         cellOptions.show();
+        cellOptions.setOption($('.color-cell'));
 
         // Update current selected color
         $('.trigger-color-picker').css('color', color);
@@ -365,7 +371,7 @@ $(document).ready(function () {
             .removeClass('col-md-12')
             .addClass('col-md-8');
         hideDesignArea(false);
-        $('.tool-container').empty();
+        toolContainer.empty();
         $('.tooling').trigger('click');
         showToolbar(false);
         $('.actions').hide();
@@ -381,63 +387,62 @@ $(document).ready(function () {
     * @param {Event} - The object to which event was triggered
     */
     $('body').on('mousedown', '.active td', function (evt5) {
-
         let activeTds = $('.active td');
         let cell = new Cell(this);
 
-        if (cellOptions.sparkles) {
-            cell.selector.append('<span class="sparkle" style="position: absolute; overflow: hidden; top: 0; left: 10px;     animation: spin 2s linear infinite reverse;"></span>' +
-                '<span class="sparkle" style="position: absolute; top: 8; left: 7px; overflow: hidden; animation: reverseSpin 2s linear infinite reverse; "></span>' +
-                '<span class="sparkle" style="position: absolute; top: 0; left: 2px; overflow: hidden;"></span>' +
+        console.log('option: ', cellOptions.option);
+        switch (cellOptions.option.name) {
+            case 'sparkles':
+                cell.selector.append('<span class="sparkle" style="position: absolute; overflow: hidden; top: 0; left: 10px; animation: spin 2s linear infinite reverse;"></span>' +
+                    '<span class="sparkle" style="position: absolute; top: 8; left: 7px; overflow: hidden; animation: reverseSpin 2s linear infinite reverse;"></span>' +
+                    '<span class="sparkle" style="position: absolute; top: 0; left: 2px; overflow: hidden;"></span>' +
+                    '<span class="sparkle" style="position: absolute; overflow: hidden; animation: reverseSpin 2s linear infinite; top: 2px; left: 7px;"></span>' +
+                    '<span class="sparkle" style="position: absolute; overflow: hidden; animation: spin 2s linear infinite; top: 11; right: 10px;"></span>' +
+                    '<span class="sparkle" style="position: absolute; top: 0;  overflow: hidden;right: 2px;"></span>'
+                );
+                break;
+            case 'dragPixelColoring':
+                activeTds.css('cursor', 'cell');
+                cell.color();
 
-                '<span class="sparkle" style="position: absolute;   overflow: hidden;   animation: reverseSpin 2s linear infinite; top: 2px; left: 7px;"></span>' +
-                '<span class="sparkle" style="position: absolute;   overflow: hidden;   animation: spin 2s linear infinite; top: 11; right: 10px;"></span>' +
-                '<span class="sparkle" style="position: absolute; top: 0;  overflow: hidden;right: 2px;"></span>'
-            );
-        } else if (cellOptions.dragPixelColoring) {
-            activeTds.css('cursor', 'cell');
-            cell.color();
+                // As we enter new cells, color them
+                $('.active td').on('mouseenter', function (evt2) {
+                    let targetCell = new Cell(evt2.currentTarget);
+                    targetCell.color()
+                });
 
-            // As we enter new cells, color them
-            $('.active td').on('mouseenter', function (evt2) {
-                let targetCell = new Cell(evt2.currentTarget);
-                targetCell.color()
-            });
+                // Terminates the coloring of new cell, by by removing the listener
+                $('.active td').on('mouseup', function (evt3) {
+                    //$(evt3.target).css('background-color', 'purple'); // Color last cell dragged to. Just a little extra magic
+                    $('.active td').off('mouseenter');
+                });
+                break;
+            case 'erase':
+                console.log('should erase');
+                cell.uncolor();
+                $('.active td').on('mouseenter', function (evt2) {
 
-            // Terminates the coloring of new cell, by by removing the listener
-            $('.active td').on('mouseup', function (evt3) {
-                //$(evt3.target).css('background-color', 'purple'); // Color last cell dragged to. Just a little extra magic
-                $('.active td').off('mouseenter');
-            });
-        } else if (cellOptions.isErasing) {
-            console.log('should erase');
-            cell.uncolor();
-            $('.active td').on('mouseenter', function (evt2) {
+                    // we want to make sure to get just the td and not it's child (span sparkle element for example)
+                    let targetCell = new Cell(evt2.currentTarget);
+                    targetCell.uncolor();
+                });
 
-                // we want to make sure to get just the td and not it's child (span sparkle element for example)
-                let targetCell = new Cell(evt2.currentTarget);
-                targetCell.uncolor();
-            });
-
-            // Terminates the coloring of new cell, by by removing the listener
-            $('.active td').on('mouseup', function (evt3) {
-                //$(evt3.target).css('background-color', 'purple'); // Color last cell dragged to. Just a little extra magic
-                $('.active td').off('mouseenter');
-            });
-        } else {
-            // Enter a letter
-            activeTds.css('cursor', 'text');
-            activeTds.addClass('pixel-text');
-            cell.selector.addClass('pixel-text').html(letter.html());
+                // Terminates the coloring of new cell, by by removing the listener
+                $('.active td').on('mouseup', function (evt3) {
+                    //$(evt3.target).css('background-color', 'purple'); // Color last cell dragged to. Just a little extra magic
+                    $('.active td').off('mouseenter');
+                });
+                break;
+            case 'pixelTexting':
+                // Enter a letter
+                activeTds.css('cursor', 'text');
+                activeTds.addClass('pixel-text');
+                cell.selector.addClass('pixel-text').html(letter.html());
+                break;
+            default:
+                console.log('invalid option');
         }
-    });
 
-    /**
-   * @description Allows coloring of multiple pixels with dragging
-   * @param {Event} - The object to which event was triggered
-   */
-    $('body').on('dblclick', '.active td', function (evt) {
-        $(evt.target).html('');
     });
 
     /**
@@ -531,20 +536,7 @@ $(document).ready(function () {
     });
 
     $('body').on('click', '.tool-options span', function (evt) {
-        const target = $(evt.target);
-        cellOptions.resetOptions();
-
-        if (target.hasClass('sparkles')) {
-            cellOptions.setOption('sparkles');
-        } else if (target.hasClass('erase')) {
-            console.log('should be erasing');
-            cellOptions.setOption('isErasing');
-        } else if (target.hasClass('pixelTexting')) {
-            console.log('should be texting');
-            cellOptions.setOption('pixelTexting');
-        } else {
-            console.log('should be coloring');
-            cellOptions.setOption('dragPixelColoring');
-        }
+        let target = $(evt.target);
+        cellOptions.setOption(target);
     });
 });
