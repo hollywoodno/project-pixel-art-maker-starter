@@ -374,9 +374,25 @@ $(document).ready(function () {
     * @description Resets the live canvas and returns user to initial design state
     * @param
     */
-    $('body').on('click', '#confirm-start-over', function (evt) {
+    $('body').on('click', '#confirm-start-over', function () {
         $('#confirmStartOverModal').modal('hide');
         $('#reset').trigger('click');
+    });
+
+    /**
+    * @description Clears any pixel art in the grid
+    * @param
+    */
+    $('body').on('click', '#confirm-reset', function () {
+        $('#confirmResetModal').modal('hide');
+        debugger;
+        const cells = pixelCanvas.find('td')
+        cells.html('');
+        cells.empty();
+
+        cells.css('background-color', '#fff');
+        
+        //cells.empty();
     });
 
     /**
@@ -384,6 +400,7 @@ $(document).ready(function () {
     * @param
     */
     $('body').on('click', '#reset', function () {
+        debugger;
         width = undefined;
         height = undefined;
         color = '#000000';
@@ -401,7 +418,7 @@ $(document).ready(function () {
             .addClass('col-md-8');
         hideDesignArea(false);
         toolContainer.empty();
-        $('.tooling').trigger('click');
+        //$('.tooling').trigger('click');
         showToolbar(false);
         $('.actions').hide();
         colorPicker.val('#000');
@@ -418,7 +435,6 @@ $(document).ready(function () {
     $('body').on('mousedown', '.active td', function (evt5) {
         let activeTds = $('.active td');
         let cell = new Cell(this);
-        debugger;
         console.log('option: ', cellOptions.option);
         if (activity === "pixelColoring") {
             switch (cellOptions.option.name) {
@@ -564,21 +580,27 @@ $(document).ready(function () {
     $('.action-button').on('click', function (evt) {
 
         $('.tooling').first().trigger('click');
+
+        let action = $(this);
+
         // Determine which action tool to display in tool container
-        if ($(this).hasClass('color-cells')) {
+        if (action.hasClass('color-cells')) {
             $('.action-button').removeAttr('disabled');
-            $(this).attr('disabled', true);
+            action.attr('disabled', true);
             activity = "pixelColoring";
             cellOptions.show();
-        } else if ($(this).hasClass('add-text')) {
+        } else if (action.hasClass('add-text')) {
             $('.action-button').removeAttr('disabled');
-            $(this).attr('disabled', true);
+            action.attr('disabled', true);
             activity = "pixelTexting";
             keyboardOptions.show();
             keyboardOptions.setOption($('.color-text'));
-        } else if ($(this).hasClass('start-over')) {
+        } else if (action.hasClass('start-over')) {
             activity = "startOver";
             $('#confirmStartOverModal').modal('show');
+        } else if (action.hasClass('reset')) {
+            //activity = "reset";
+            $('#confirmResetModal').modal('show');
         } else {
             console.log('Should show help info about the options');
         }
