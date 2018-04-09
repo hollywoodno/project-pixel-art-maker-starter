@@ -46,7 +46,8 @@ $(document).ready(function () {
             this.selector.html(text);
         };
         this.removeText = function () {
-            this.selector.text('');
+            // Important: we don't use .text('') because it will remove all content including any sparkles in the cell
+            this.selector.html(this.selector.children());
         }
     }
 
