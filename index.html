@@ -39,7 +39,7 @@
                     <span class="glyphicon glyphicon-text-size"></span>
                 </button>
                 <!-- reset-canvas  -->
-                <button class="btn btn-default action-button refresh">
+                <button class="btn btn-default action-button reset">
                     <span class="glyphicon glyphicon-repeat"></span>
                 </button>
                 <button class="btn btn-default action-button start-over"
@@ -130,7 +130,7 @@
 
     </div>
 
-    <!--Confirm Reset Pixel Canvas Modal-->
+    <!--Confirm Start Over Pixel Canvas Modal-->
 
     <div class="modal fade" id="confirmStartOverModal" role="dialog">
 
@@ -164,9 +164,43 @@
             </div>
 
         </div>
+    </div>
+    <!--Confirm Reset Pixel Canvas Modal-->
+
+    <div class="modal fade" id="confirmResetModal" role="dialog">
+
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    <h4 class="modal-title">Confirm Clear Pixel Canvas: </h4>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <p>Are you sure you want to clear the current canvas? You will loose your pixel art.</p>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" id="confirm-reset" class="btn btn-primary">Reset Canvas</button>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
-
     <script src="scripts/designs.js"></script>
 
 </body>
