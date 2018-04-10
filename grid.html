@@ -1,0 +1,208 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <title>Pixel Maker</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="styles/styles.css">
+
+</head>
+
+<body>
+
+    <div class="container-fluid">
+
+        <!--Header Section-->
+
+        <h1 class="main-title">Pixel Maker</h1>
+
+        <!-- Pixel Canvas Toolbar -->
+
+        <div class="toolbar">
+
+            <div class="toolbox tooling">
+                <button class="btn btn-default action-button color-cells">
+                    <span class="glyphicon glyphicon-th-large cell-options-icon"></span>
+                </button>
+                <button class="btn btn-default action-button add-text">
+                    <!-- text-tool -->
+                    <span class="glyphicon glyphicon-text-size"></span>
+                </button>
+                <!-- reset-canvas  -->
+                <button class="btn btn-default action-button reset">
+                    <span class="glyphicon glyphicon-repeat"></span>
+                </button>
+                <button class="btn btn-default action-button start-over"
+                        id="start-over-button">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                <button class="btn btn-default action-button">
+                    <span class="glyphicon glyphicon-info-sign "></span>
+                </button>
+            </div>
+
+            <div class="tool-icon tooling">
+                <p><span class="glyphicon glyphicon-hand-left tooling"></span></p>
+            </div>
+
+        </div>
+
+        <!-- Canvas Design -->
+
+        <div class="row main-content">
+
+            <div class="col-sm-12 col-md-4 design-area">
+
+                <h2 class="text-center section-title">Design</h2>
+
+                <!--Dimension Selection-->
+
+                <form id="canvas-dimensions">
+
+                    <div class="form-group">
+
+                        <label for="canvas-width">Width:</label>
+                        <input type="number" min="1" max="12" class="form-control dimension dimension-control-group" id="canvas-width" placeholder="canvas width" name="canvas-width" autofocus>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="canvas-height">Height:</label>
+                        <input type="number" min="1" max="12" class="form-control dimension dimension-control-group" id="canvas-height" placeholder="canvas height" name="canvas-height">
+
+                    </div>
+
+                    <div class="hidden-xs hidden-sm btn-group">
+
+                        <button type="submit" class="btn btn-default dimension-control-group" id="preview" disabled>Preview</button>
+
+                        <button type="reset" id="reset" class="btn btn-default">Reset</button>
+
+                    </div>
+
+                </form>
+
+                <br>
+                <br>
+
+                <!-- Color Picker -->
+
+                <label for="color-picker-1">Pick your color</label>
+                <input type="color" id="color-picker-1" class="color-picker">
+
+                <br>
+                <br>
+
+                <button class="btn btn-block build" id="build" disabled>Build</button>
+
+            </div>
+
+            <!-- Pixel Canvas Preview -->
+
+            <div class="hidden-xs hidden-sm col-md-8 preview-area">
+
+                <!-- TODO: Add section to explain how to use features -->
+                <h2 class="section-title">Preview</h2>
+                <div class="container actions">
+                    <div class="row action-item" style="background-color: #eee; padding: 7px; margin: 0 auto;">
+                        <div class="col-xs-12 tool-container">
+                        </div>
+                    </div>
+                </div>
+                <table id="pixel-canvas"></table>
+                <label for="color-picker-3" class="sr-only">Pick your color</label>
+                <input type="color" id="color-picker-3" class="color-picker">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--Confirm Start Over Pixel Canvas Modal-->
+
+    <div class="modal fade" id="confirmStartOverModal" role="dialog">
+
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    <h4 class="modal-title">Confirm Clear Canvas: </h4>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <p>Are you sure you want to start over? You will loose your pixel art.</p>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" id="confirm-start-over" class="btn btn-primary">Start Over</button>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!--Confirm Reset Pixel Canvas Modal-->
+
+    <div class="modal fade" id="confirmResetModal" role="dialog">
+
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    <h4 class="modal-title">Confirm Clear Pixel Canvas: </h4>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <p>Are you sure you want to clear the current canvas? You will loose your pixel art.</p>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" id="confirm-reset" class="btn btn-primary">Reset Canvas</button>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script src="scripts/designs.js"></script>
+
+</body>
+
+</html>

@@ -540,7 +540,7 @@ $(document).ready(function () {
     */
     $('.tooling').on('click', function (evt) {
         // Use 'this' so that toolbox items don't toggle display of toolbar
-        if (evt.target != this) { return };
+            if (evt.target != this || $('.tool-icon').css('display') === 'none') { return };
         if (toolbarIsOpen) {
             toolbarIsOpen = false;
 

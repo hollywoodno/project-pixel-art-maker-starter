@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" style="background-color: white;">
 
 <head>
 
@@ -18,190 +18,42 @@
 
 </head>
 
-<body>
+<body style="background-color: white;">
 
-    <div class="container-fluid">
+    <div class="container">
 
         <!--Header Section-->
+        <h1>P<span style="color: green;">i</span><span style="color: orange;">X</span><span style="color: green;">e</span><span style="color: cornflowerblue;">L</span> Maker</h1>
 
-        <h1 class="main-title">Pixel Maker</h1>
-
-        <!-- Pixel Canvas Toolbar -->
-
-        <div class="toolbar">
-
-            <div class="toolbox tooling">
-                <button class="btn btn-default action-button color-cells">
-                    <span class="glyphicon glyphicon-th-large cell-options-icon"></span>
-                </button>
-                <button class="btn btn-default action-button add-text">
-                    <!-- text-tool -->
-                    <span class="glyphicon glyphicon-text-size"></span>
-                </button>
-                <!-- reset-canvas  -->
-                <button class="btn btn-default action-button reset">
-                    <span class="glyphicon glyphicon-repeat"></span>
-                </button>
-                <button class="btn btn-default action-button start-over"
-                        id="start-over-button">
-                    <span class="glyphicon glyphicon-trash"></span>
-                </button>
-                <button class="btn btn-default action-button">
-                    <span class="glyphicon glyphicon-info-sign "></span>
-                </button>
-            </div>
-
-            <div class="tool-icon tooling">
-                <p><span class="glyphicon glyphicon-hand-left tooling"></span></p>
-            </div>
-
+        <!-- Pixel Cells -->
+        <div class="pixel-1 flying-pixel"></div>
+        <div class="pixel-2 flying-pixel">H</div>
+        <div class="pixel-3 flying-pixel">
+            <span class="sparkle" style="position: absolute; overflow: hidden; top: 0; left: 10px; animation: spin 2s linear infinite reverse;"></span>
+            <span class="sparkle" style="position: absolute; top: 8px; left: 7px; overflow: hidden; animation: reverseSpin 2s linear infinite reverse;"></span>
+            <span class="sparkle" style="position: absolute; top: 0; left: 2px; overflow: hidden;"></span>
+            <span class="sparkle" style="position: absolute; overflow: hidden; animation: reverseSpin 2s linear infinite; top: 2px; left: 7px;"></span>
+            <span class="sparkle" style="position: absolute; overflow: hidden; animation: spin 2s linear infinite; top: 11px; right: 10px;"></span>
+            <span class="sparkle" style="position: absolute; top: 0;  overflow: hidden;right: 2px;"></span>
+        </div>
+        <div class="pixel-4 flying-pixel"></div>
+        <div class="pixel-5 flying-pixel"></div>
+        <div class="pixel-6 flying-pixel">i</div>
+        <div class="pixel-7 flying-pixel">
+            <span class="sparkle" style="position: absolute; overflow: hidden; top: 0; left: 10px; animation: spin 2s linear infinite reverse;"></span>
+            <span class="sparkle" style="position: absolute; top: 8px; left: 7px; overflow: hidden; animation: reverseSpin 2s linear infinite reverse;"></span>
+            <span class="sparkle" style="position: absolute; top: 0; left: 2px; overflow: hidden;"></span>
+            <span class="sparkle" style="position: absolute; overflow: hidden; animation: reverseSpin 2s linear infinite; top: 2px; left: 7px;"></span>
+            <span class="sparkle" style="position: absolute; overflow: hidden; animation: spin 2s linear infinite; top: 11px; right: 10px;"></span>
+            <span class="sparkle" style="position: absolute; top: 0;  overflow: hidden;right: 2px;"></span>
         </div>
 
-        <!-- Canvas Design -->
-
-        <div class="row main-content">
-
-            <div class="col-sm-12 col-md-4 design-area">
-
-                <h2 class="text-center section-title">Design</h2>
-
-                <!--Dimension Selection-->
-
-                <form id="canvas-dimensions">
-
-                    <div class="form-group">
-
-                        <label for="canvas-width">Width:</label>
-                        <input type="number" min="1" max="12" class="form-control dimension dimension-control-group" id="canvas-width" placeholder="canvas width" name="canvas-width" autofocus>
-
-                    </div>
-
-                    <div class="form-group">
-
-                        <label for="canvas-height">Height:</label>
-                        <input type="number" min="1" max="12" class="form-control dimension dimension-control-group" id="canvas-height" placeholder="canvas height" name="canvas-height">
-
-                    </div>
-
-                    <div class="hidden-xs hidden-sm btn-group">
-
-                        <button type="submit" class="btn btn-default dimension-control-group" id="preview" disabled>Preview</button>
-
-                        <button type="reset" id="reset" class="btn btn-default">Reset</button>
-
-                    </div>
-
-                </form>
-
-                <br>
-                <br>
-
-                <!-- Color Picker -->
-
-                <label for="color-picker-1">Pick your color</label>
-                <input type="color" id="color-picker-1" class="color-picker">
-
-                <br>
-                <br>
-
-                <button class="btn btn-block build" id="build" disabled>Build</button>
-
-            </div>
-
-            <!-- Pixel Canvas Preview -->
-
-            <div class="hidden-xs hidden-sm col-md-8 preview-area">
-
-                <!-- TODO: Add section to explain how to use features -->
-                <h2 class="section-title">Preview</h2>
-                <div class="container actions">
-                    <div class="row action-item" style="background-color: #eee; padding: 7px; margin: 0 auto;">
-                        <div class="col-xs-12 tool-container">
-                        </div>
-                    </div>
-                </div>
-                <table id="pixel-canvas"></table>
-                <label for="color-picker-3" class="sr-only">Pick your color</label>
-                <input type="color" id="color-picker-3" class="color-picker">
-
-            </div>
-
-        </div>
+        <!-- Large Corner Pixel Cell -->
+        <div class="large-pixel"></div>
 
     </div>
 
-    <!--Confirm Start Over Pixel Canvas Modal-->
-
-    <div class="modal fade" id="confirmStartOverModal" role="dialog">
-
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-
-                <div class="modal-header">
-
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-                    <h4 class="modal-title">Confirm Clear Canvas: </h4>
-
-                </div>
-
-                <div class="modal-body">
-
-                    <p>Are you sure you want to start over? You will loose your pixel art.</p>
-
-                </div>
-
-                <div class="modal-footer">
-
-                    <button type="button" id="confirm-start-over" class="btn btn-primary">Start Over</button>
-
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-    <!--Confirm Reset Pixel Canvas Modal-->
-
-    <div class="modal fade" id="confirmResetModal" role="dialog">
-
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-
-                <div class="modal-header">
-
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-                    <h4 class="modal-title">Confirm Clear Pixel Canvas: </h4>
-
-                </div>
-
-                <div class="modal-body">
-
-                    <p>Are you sure you want to clear the current canvas? You will loose your pixel art.</p>
-
-                </div>
-
-                <div class="modal-footer">
-
-                    <button type="button" id="confirm-reset" class="btn btn-primary">Reset Canvas</button>
-
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-    <script src="scripts/designs.js"></script>
+    <a class="btn btn-default get-started-button" href="grid.html">Get Started!</a>
 
 </body>
 

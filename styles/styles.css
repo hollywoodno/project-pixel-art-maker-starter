@@ -76,10 +76,6 @@ input[type="color"]:not(#color-picker-1) {
 table {
     margin: 10px auto 0 auto;
     border-collapse: collapse;
-    /*padding: 20px;*/
-    /*empty-cells: show;*/
-    /*table-layout: fixed;*/
-    /*width: 200px;*/
     max-width: 100vh;
 }
 
@@ -102,38 +98,15 @@ td {
     margin: 0;
     padding: 0;
     position: relative;
-    /*min-width: 80%;*/
-    /*min-height: 80%;*/
 }
 
 
-.pixel-text, .letter {
-    cursor: text;
-    /*text-transform: uppercase;*/
-    position: relative;
-    /*font-size: 10px;*/
-    /*     color: salmon; */
-}
-
-
-/*.keyboard,
-.keyboard * {
-    border: none;
-    background-color: white;
-    box-shadow: 6px 6px 10px rgba(58, 55, 106, 0.50);
-}*/
-
-
-.keyboard tr {
-    height: 0;
-}
-
-
-.letter {
-    /*border-radius: 100%;*/
-    background-color: #fff;
-    padding: 15px;
-    /*border: 2px solid rgb(234, 223, 165);*/
+.sparkle {
+    border-radius: 100%;
+    background-color: #bbb;
+    display: inline-block;
+    padding: 2px; /*gives sparkle volume*/
+    -webkit-animation: spin 2s linear infinite; /* Safari */
 }
 
 
@@ -143,10 +116,21 @@ button {
     color: white;
 }
 
+/* Live Pixel Coloring Keyboard Tool */
+.keyboard tr {
+    height: 0;
+}
 
-.reset-canvas {
-    /*width: 60%;*/
-    /*margin-top: 10px;*/
+
+.pixel-text, .letter {
+    cursor: text;
+    position: relative;
+}
+
+
+.letter {
+    background-color: #fff;
+    padding: 15px;
 }
 
 
@@ -157,14 +141,13 @@ button {
 }
 
 
+/* Preview Tooling Areas */
 div.row.action-item * {
     vertical-align: middle;
     padding: 0;
     margin: 0 auto;
 }
 
-
-/* Preview Toolbar Area */
 .toolbar {
     display: none;
 }
@@ -175,8 +158,6 @@ div.row.action-item * {
     z-index: 9;
     position: absolute;
     color: #696969;
-    /*font-size: 2em;*/
-    /*transform: rotate(230deg);*/
 }
 
 
@@ -194,8 +175,6 @@ div.row.action-item * {
     padding: 0;
     border-collapse: collapse;
     empty-cells: show;
-    /*table-layout: fixed;
-    width: 100px;*/
 }
 
 
@@ -234,27 +213,121 @@ div.row.action-item * {
 }
 
 
-.sparkle {
-    /*border: 1px solid #f3f3f3;*/
-    border-radius: 100%;
-    /*lines*/
-    /*border-top: 10px solid #e3e3e3;*/
-    /*large dots*/
-    /*height: 7px;*/
-    /*width: 7px;*/
-    background-color: #bbb;
-    display: inline-block;
-    /*gives sparkle volume*/
-    padding: 2px;
-    -webkit-animation: spin 2s linear infinite; /* Safari */
+/* Homepage Flying Pixels */
+.flying-pixel {
+    width: 25px;
+    height: 25px;
+    animation: fly 2s;
+    position: relative;
+    text-align: center;
+    left: 0;
+    top: 0;
 }
 
 
-.rotating-border {
-    border: 2px solid green;
-    animation: flip 2s linear infinite;
+.pixel-1 {
+    background: red;
+    animation: fly 2s;
+    left: 0;
+    top: 70px;
 }
 
+
+.pixel-2 {
+    background: white;
+    border: 1px solid green;
+    animation: fly 2s;
+    left: 70px;
+    top: 100px;
+}
+
+
+.pixel-3 {
+    background: yellow;
+    animation: fly 3s;
+    left: 30px;
+    top: 40px;
+}
+
+
+.pixel-4 {
+    background: cornflowerblue;
+    animation: fly 1s;
+    left: 140px;
+    top: 40px;
+}
+
+
+.pixel-5 {
+    background: pink;
+    animation: fly 6s;
+    left: 200px;
+    top: 30px;
+}
+
+
+.pixel-6 {
+    background: white;
+    border: 1px solid green;
+    animation: fly 5s;
+    left: 100px;
+    top: 0;
+}
+
+
+.pixel-7 {
+    background: black;
+    border: 1px solid green;
+    animation: fly 5s;
+    left: 250px;
+    top: 250px;
+}
+
+
+.large-pixel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    height: 80%;
+    border: 4px solid rgb(234, 223, 165);
+}
+
+
+.get-started-button {
+    background-color: cadetblue;
+    animation: fade 5s;
+    color: white;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    left: initial;
+}
+
+/* Animations */
+
+@keyframes fade {
+    to {
+        opacity: 1;
+    }
+
+    from {
+        opacity: 0;
+    }
+}
+
+
+/* Flying pixels on homepage */
+@keyframes fly {
+    0% {
+        background: red;
+        top: 200px;
+        left: -800px;
+    }
+}
+
+
+/* Creates sparkles for sparkling pixels cell */
 /* Safari */
 @-webkit-keyframes spin {
     0% {
@@ -302,27 +375,19 @@ div.row.action-item * {
     }
 }
 
-@keyframes clean {
-    0% {
-        /*transform: rotate(90deg);*/
-        opacity: 0;
+/* Media queries */
+
+/* Ajustments for homescreen flying pixels */
+@media screen and (min-width: 600px) {
+    .get-started-button {
+        width: 50%;
+        margin: 0 auto;
     }
 
-    100% {
-        /*transform: rotate(-160deg);*/
-        opacity: 1;
-    }
-}
-
-
-@keyframes flip {
-    0% {
-        border: 0px solid red;
-        border-radius: 100%;
-    }
-
-    100% {
-        border: .5px solid blue;
-        border-radius: 100%;
+    .pixel-8 {
+        right: 0px;
+        position: fixed;
+        text-align: center;
+        bottom: 0;
     }
 }
