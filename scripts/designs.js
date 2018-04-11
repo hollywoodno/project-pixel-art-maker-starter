@@ -95,9 +95,9 @@ $(document).ready(function () {
         dragPixelColoring: { name: 'dragPixelColoring', 'selected': true, selector: $('.color-cell') },
         html: '<div class="col-xs-auto tool-options">' +
         '<button style="background-color: #b03a2e; margin-right: 10px;"><span class="glyphicon glyphicon-th-large cell-tool" style="display: inline-block; margin: 10px;"></span></button>' +
-        '<button class="btn btn-default tool-button" style="margin: 5px;"><span class="glyphicon glyphicon-tint trigger-color-picker color-cell tool-option" style="display: inline-block; margin: 10px;"></span></button>' +
-        '<button class="btn btn-default tool-button" style="margin: 5px;"><span class="glyphicon glyphicon-asterisk sparkles tool-option" style="display: inline-block; margin: 10px;"></span></button>' +
-        '<button class="btn btn-default tool-button" style="margin: 5px;"><span class="glyphicon glyphicon-erase erase tool-option" style="display: inline-block; margin: 10px;"></span></button></div>',
+        '<button class="btn btn-default tool-button" style="margin: 5px; box-shadow: 6px 6px 10px rgba(58, 55, 106, 0.50);"><span class="glyphicon glyphicon-tint trigger-color-picker color-cell tool-option" style="display: inline-block; margin: 10px;"></span></button>' +
+        '<button class="btn btn-default tool-button" style="margin: 5px; box-shadow: 6px 6px 10px rgba(58, 55, 106, 0.50);"><span class="glyphicon glyphicon-asterisk sparkles tool-option" style="display: inline-block; margin: 10px;"></span></button>' +
+        '<button class="btn btn-default tool-button" style="margin: 5px; box-shadow: 6px 6px 10px rgba(58, 55, 106, 0.50);"><span class="glyphicon glyphicon-erase erase tool-option" style="display: inline-block; margin: 10px;"></span></button></div>',
         show: function () {
             toolContainer.empty();
             toolContainer.prepend(this.html);
@@ -107,7 +107,10 @@ $(document).ready(function () {
         },
         setOption: function (selector) {
             this.resetOptions();
+
+            // Show selected option selected state
             selector.parent().first().attr('disabled', true);
+            selector.parent().first().css('box-shadow', 'initial');
 
             if (selector.hasClass('sparkles')) {
                 this.sparkles.selected = true;
@@ -115,6 +118,7 @@ $(document).ready(function () {
             } else if (selector.hasClass('color-cell') || selector.hasClass('cell-tool')) {
                 if (selector.hasClass('cell-tool')) {
                     $('.color-cell').parent().first().attr('disabled', true);
+                    $('.color-cell').parent().first().css('box-shadow', 'initial');
                 }
                 this.dragPixelColoring.selected = true;
                 this.option = this.dragPixelColoring;
@@ -127,6 +131,7 @@ $(document).ready(function () {
         },
         resetOptions: function () {
             $('.tool-button').attr('disabled', false);
+            $('.tool-button').css('box-shadow', 'shadow: 6px 6px 10px rgba(58, 55, 106, 0.50)');
             this.isErasing.selected = false;
             this.dragPixelColoring.selected = false;
             this.sparkles.selected = false;
@@ -161,6 +166,7 @@ $(document).ready(function () {
         setOption: function (selector) {
             this.resetOptions();
             selector.parent().first().attr('disabled', true);
+            selector.parent().first().css('box-shadow', 'initial');
 
             if (selector.hasClass('color-text') || selector.hasClass('cell-tool')) {
                 if (selector.hasClass('cell-tool')) {
@@ -177,6 +183,7 @@ $(document).ready(function () {
         },
         resetOptions: function () {
             $('.tool-button').attr('disabled', false);
+            $('.tool-button').css('box-shadow', 'shadow: 6px 6px 10px rgba(58, 55, 106, 0.50)');
             this.texting.selected = false;
             this.isErasing.selected = false;
         }
