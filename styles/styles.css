@@ -12,6 +12,7 @@ body {
     cursor: pointer;
 }
 
+
 .color-sample {
     width: 25px;
     height: 25px;
@@ -19,6 +20,13 @@ body {
     border-radius: 0 10%;
     background-color: #696969;
     display: inline-block;
+}
+
+
+.selected-color-icon {
+    color: green;
+    opacity: 1;
+    text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
 }
 
 

@@ -23,12 +23,14 @@ $(document).ready(function () {
             '<div class="color-sample"></div>' +
             '<div class="color-sample"></div>' +
             '<div class="color-sample"></div>' +
-            '<div class="color-sample"></div></section> ';
+        '<div class="color-sample"></div></section> ';
+
+    const choosenIcon = '<span class="glyphicon glyphicon-ok selected-color-icon"></span>';
 
     let width;
     let height;
     let letter;
-    let color = '#000000';
+    let color;
     let activity;
     let toolbarIsOpen = false;
     let colorSamplesDisplayed = false;
@@ -54,6 +56,7 @@ $(document).ready(function () {
         $(".color-samples").each(function (index) {
             const samples = $(this).find('.color-sample');
             samples.each(function (index) {
+                if ($(this).hasClass('selected-color')) { color = colorSamples[index]}
                 $(this).css('background-color', colorSamples[index]);
             });
         });
@@ -157,7 +160,6 @@ $(document).ready(function () {
         },
         setOption: function (selector) {
             this.resetOptions();
-            debugger;
             selector.parent().first().attr('disabled', true);
 
             if (selector.hasClass('color-text') || selector.hasClass('cell-tool')) {
@@ -379,7 +381,6 @@ $(document).ready(function () {
     * @param
     */
     $('body').on('click', '#keyboard td', function (evt) {
-        debugger;
         let pixelLetters = $('.letter');
 
         if ($(evt.target).text() === 'abc') {
@@ -442,7 +443,6 @@ $(document).ready(function () {
     * @param
     */
     $('body').on('click', '#reset', function () {
-        debugger;
         width = undefined;
         height = undefined;
         color = '#000000';
@@ -463,7 +463,6 @@ $(document).ready(function () {
         //$('.tooling').trigger('click');
         showToolbar(false);
         $('.actions').hide();
-        colorPicker.val('#000');
         $(pixelCanvas).css('cursor', 'unset');
         canvasWidth.focus();
         $('.action-button').removeAttr('disabled');
@@ -505,7 +504,6 @@ $(document).ready(function () {
                     });
                     break;
                 case 'erase':
-                    debugger;
                     cell.uncolor();
                     $('.active td').on('mouseenter', function (evt2) {
                         // we want to make sure to get just the td and not it's child (span sparkle element for example)
@@ -671,6 +669,19 @@ $(document).ready(function () {
     */
     $('body').on('click', '.color-sample', function (evt) {
         color = $(this).css('background-color');
+
+        // Remove currently choosen item
+        const currentSelection = $('.selected-color');
+
+        if (currentSelection) {
+            currentSelection.find('.selected-color-icon').remove();
+            currentSelection.removeClass('selected-color');
+        }
+
+        // Add newly selected item
+        $(this).addClass('selected-color');
+        $(this).append(choosenIcon);
+
         $('.trigger-color-picker').css('color', color);
     });
 
