@@ -233,6 +233,11 @@ div.row.action-item * {
 }
 
 
+.info-item {
+    margin: 15px;
+}
+
+
 /* Homepage Flying Pixels */
 .flying-pixel {
     width: 25px;

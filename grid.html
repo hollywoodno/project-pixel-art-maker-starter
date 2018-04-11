@@ -66,9 +66,9 @@
                 <h2 class="text-center section-title">Design</h2>
 
                 <!--Dimension Selection-->
-                
+
                 <section>
-                    
+
                     <form id="canvas-dimensions">
 
                         <div class="form-group">
@@ -173,7 +173,7 @@
 
         </div>
     </div>
-    
+
     <!--Confirm Reset Pixel Canvas Modal-->
 
     <div class="modal fade" id="confirmResetModal" role="dialog">
@@ -257,9 +257,66 @@
 
         </div>
 
+    </div>
+
+    <!-- Help Guide Modal-->
+
+    <div class="modal fade" id="help-guide-modal" role="dialog">
+
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    <h4 class="modal-title">Pixel Maker Help Guide: </h4>
+
+                </div>
+
+                <div class="modal-body">
+                    <h2>Tool Options</h2>
+                    <div class="info-item"><span class="glyphicon glyphicon-th-large"></span> The Color Pixel Tool. Options include changing the background color of the pixel. Adding sparkles to pixels.
+                    </div>
+                    <div class="info-item"><span class="glyphicon glyphicon-text-size"></span> Text Tool allows you to write lower and uppercase characters on pixel canvas.
+                    </div>
+                    <div class="info-item"><span class="glyphicon glyphicon-repeat"></span> Reset Tool the current grid by deleting any applied pixel art. Once deleted pixel art cannot be recovered.
+                    </div>
+                    <div class="info-item"><span class="glyphicon glyphicon-trash"></span> Trash Tool ends pixel art live section. The current grid is removed and you're returned to the initial design phase.
+                    </div>
+                    <hr />
+                    <h3>Sub Options</h3>
+                    <div class="info-item">
+                        <p>Each pixel tool has a color picker for selecting a custom color and an eraser for erasing only the current tools pixel art. For instance text option on erases text. </p>
+                        <span class="glyphicon glyphicon-tint trigger-color-picker color-cell tool-option" style="display: inline-block; margin: 10px;"></span><span class="glyphicon glyphicon-erase erase tool-option" style="display: inline-block; margin: 10px;"></span>
+                        <p>The sparkle tool is specific to the color cell tool. It places a series of small sparkles inside a pixel. You can put color under or over a sparkle. But pixel text overwrites characters, so sparkles must go over the pixel text.</p>
+                        <span class="glyphicon glyphicon-asterisk sparkles tool-option" style="display: inline-block; margin: 10px;"></span>
+                    </div>
+
+                    <hr />
+
+                    <div>
+                        <br />
+                        <p>If your unsure what option you're using for the current tool in the tooling area, simply click on the tool icon in the tool area to return back to it's default option.</p>
+                        <button style="background-color: #b03a2e; margin-right: 10px;"><span class="glyphicon glyphicon-th-large cell-tool" style="display: inline-block; margin: 10px;"></span></button>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+
+                </div>
+
+            </div>
+
+        </div>
 
 
     </div>
+
     <script src="scripts/designs.js"></script>
 
 </body>

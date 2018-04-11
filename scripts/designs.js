@@ -356,33 +356,6 @@ $(document).ready(function () {
         buildCanvas();
     });
 
-    ///**
-    //* @description Allows hiding default input type="color" element so we can use icon instead.
-    //* When clicking on the icon, it triggers a click on the first all the color picker input fields
-    //* @param
-    //*/
-    //$('body').on('click', '.trigger-color-picker', function (evt) {
-    //    $('.color-picker').first().trigger('click');
-    //});
-
-    /**
-    * @description Handler for updating the color from the color picker
-    * @param
-    */
-    //$('body').on('input', '.color-picker', function (evt) {
-    //    color = $(evt.target).val();
-    //    $('.color-picker').val(color);
-    //    $('.trigger-color-picker').css('color', color); // color the icon so user know color has change
-
-    //    // If color is changed from the toolbar, we want to automatically close the toolbar after color selection.
-    //    // The color picker in the toolbar, will have a parent with the tooling class.
-    //    let toolbarParents = $(evt.target).parents('.tooling');
-    //    if (toolbarParents.length > 0) {
-    //        toolbarIsOpen = true;
-    //        toolbarParents.first().trigger('click');
-    //    }
-    //});
-
     /**
     * @description Handler for updating the text
     * @param
@@ -646,9 +619,9 @@ $(document).ready(function () {
             activity = "startOver";
             $('#confirmStartOverModal').modal('show');
         } else if (action.hasClass('reset')) {
-            //activity = "reset";
             $('#confirmResetModal').modal('show');
         } else {
+            $('#help-guide-modal').modal('show');
             console.log('Should show help info about the options');
         }
 
@@ -674,7 +647,7 @@ $(document).ready(function () {
     * @description Updates current color based on user selection
     * @param {Event} - The object to which event was triggered
     */
-    $('body').on('click', '.color-sample', function (evt) {
+    $('body').on('click', '.color-sample', function () {
         color = $(this).css('background-color');
 
         // Remove currently choosen item
@@ -697,7 +670,7 @@ $(document).ready(function () {
     * @description Toggles display of color samples while in live pixel mode
     * @param {Event} - The object to which event was triggered
     */
-    $(document).on("click", ".trigger-color-picker", function (e) {
+    $(document).on("click", ".trigger-color-picker", function () {
         if (!colorSamplesDisplayed) { 
             colorSamplesDisplayed = true;
             toolContainer.prepend(colorSamplesHtml);
