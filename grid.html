@@ -66,45 +66,53 @@
                 <h2 class="text-center section-title">Design</h2>
 
                 <!--Dimension Selection-->
+                
+                <section>
+                    
+                    <form id="canvas-dimensions">
 
-                <form id="canvas-dimensions">
+                        <div class="form-group">
 
-                    <div class="form-group">
+                            <label for="canvas-width" style="font-weight: inherit;">Width:</label>
+                            <input type="number" min="1" max="12" class="form-control dimension dimension-control-group" id="canvas-width" placeholder="canvas width" name="canvas-width" autofocus>
 
-                        <label for="canvas-width">Width:</label>
-                        <input type="number" min="1" max="12" class="form-control dimension dimension-control-group" id="canvas-width" placeholder="canvas width" name="canvas-width" autofocus>
+                        </div>
 
-                    </div>
+                        <div class="form-group">
 
-                    <div class="form-group">
+                            <label for="canvas-height" style="font-weight: inherit;">Height:</label>
+                            <input type="number" min="1" max="12" class="form-control dimension dimension-control-group" id="canvas-height" placeholder="canvas height" name="canvas-height">
 
-                        <label for="canvas-height">Height:</label>
-                        <input type="number" min="1" max="12" class="form-control dimension dimension-control-group" id="canvas-height" placeholder="canvas height" name="canvas-height">
+                        </div>
 
-                    </div>
+                        <hr />
 
-                    <div class="hidden-xs hidden-sm btn-group">
+                        <!-- Color Picker / Samples -->
+                        <section class="color-samples">
+                            <div style="margin: 10px 0;">Color Sample</div>
+                            <div class="color-sample"></div>
+                            <div class="color-sample"></div>
+                            <div class="color-sample"></div>
+                            <div class="color-sample"></div>
+                            <div class="color-sample"></div>
+                        </section>
 
-                        <button type="submit" class="btn btn-default dimension-control-group" id="preview" disabled>Preview</button>
+                        <br>
+                        <br>
 
-                        <button type="reset" id="reset" class="btn btn-default">Reset</button>
+                        <div class="hidden-xs hidden-sm btn-group">
 
-                    </div>
+                            <button type="submit" class="btn btn-default dimension-control-group" id="preview" disabled>Preview</button>
 
-                </form>
+                            <button type="reset" id="reset" class="btn btn-default">Reset</button>
 
-                <br>
-                <br>
+                        </div>
 
-                <!-- Color Picker -->
+                    </form>
 
-                <label for="color-picker-1">Pick your color</label>
-                <input type="color" id="color-picker-1" class="color-picker">
+                </section>
 
-                <br>
-                <br>
-
-                <button class="btn btn-block build" id="build" disabled>Build</button>
+                <button class="btn btn-block build" id="build" style="margin-top: 15px;" disabled>Build</button>
 
             </div>
 
@@ -121,8 +129,6 @@
                     </div>
                 </div>
                 <table id="pixel-canvas"></table>
-                <label for="color-picker-3" class="sr-only">Pick your color</label>
-                <input type="color" id="color-picker-3" class="color-picker">
 
             </div>
 
@@ -165,6 +171,7 @@
 
         </div>
     </div>
+    
     <!--Confirm Reset Pixel Canvas Modal-->
 
     <div class="modal fade" id="confirmResetModal" role="dialog">
@@ -199,6 +206,54 @@
             </div>
 
         </div>
+
+
+
+    </div>
+
+    <!--Confirm Reset Pixel Canvas Modal-->
+
+    <div class="modal fade" id="color-sample-modal" role="dialog">
+
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    <h4 class="modal-title">Select a color: </h4>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <!-- Color Picker / Samples -->
+                    <section class="color-samples">
+                        <div class="color-sample"></div>
+                        <div class="color-sample"></div>
+                        <div class="color-sample"></div>
+                        <div class="color-sample"></div>
+                        <div class="color-sample"></div>
+                    </section>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" id="confirm-reset" class="btn btn-primary">Reset Canvas</button>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
 
     </div>
     <script src="scripts/designs.js"></script>

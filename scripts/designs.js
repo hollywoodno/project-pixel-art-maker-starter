@@ -1,9 +1,29 @@
 $(document).ready(function () {
     'use strict';
 
-    let letters = [['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'],
+    const letters = [['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'],
     ['j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r'],
     ['s', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'ABC']];
+
+    const colorSamples = [
+        'green',
+        'blue',
+        'orange',
+        'pink',
+        'red',
+        'black',
+        'yellow'
+    ];
+
+    const colorSamplesHtml =                     
+        '<section class="color-samples">' +
+            '<div class="color-sample"></div>' +
+            '<div class="color-sample"></div>' +
+            '<div class="color-sample"></div>' +
+            '<div class="color-sample"></div>' +
+            '<div class="color-sample"></div>' +
+            '<div class="color-sample"></div>' +
+            '<div class="color-sample"></div></section> ';
 
     let width;
     let height;
@@ -11,13 +31,14 @@ $(document).ready(function () {
     let color = '#000000';
     let activity;
     let toolbarIsOpen = false;
+    let colorSamplesDisplayed = false;
 
     // Previewing pixel canvas
     let start = 0;
     let end = 5;
 
     // Selectors
-    let colorPicker = $('.color-picker');
+    let triggerColorPicker = $('.trigger-color-picker');
     let pixelCanvas = $('#pixel-canvas');
     let designArea = $('.design-area');
     let previewArea = $('.preview-area');
@@ -27,6 +48,18 @@ $(document).ready(function () {
     let toolbar = $('.toolbar');
     let toolbox = $('.toolbox');
     let toolContainer = $('.tool-container');
+
+    /* Set up custom color samples */
+    function loadColorSamples() {
+        $(".color-samples").each(function (index) {
+            const samples = $(this).find('.color-sample');
+            samples.each(function (index) {
+                $(this).css('background-color', colorSamples[index]);
+            });
+        });
+    }
+
+    loadColorSamples($(".color-sample")); 
 
     function Cell(element) {
         this.html = element;
@@ -66,6 +99,7 @@ $(document).ready(function () {
             toolContainer.empty();
             toolContainer.prepend(this.html);
             this.icon.attr('disabled', true);
+            $('.trigger-color-picker').css('color', color);
             this.setOption(this.dragPixelColoring.selector);
         },
         setOption: function (selector) {
@@ -222,7 +256,7 @@ $(document).ready(function () {
         activity = "pixelColoring";
 
         // Update current color
-        $('.trigger-color-picker').css('color', color);
+        triggerColorPicker.css('color', color);
 
         // This differentiate a preview canvas from the live canvas
         pixelCanvas.addClass('active');
@@ -313,32 +347,32 @@ $(document).ready(function () {
         buildCanvas();
     });
 
-    /**
-    * @description Allows hiding default input type="color" element so we can use icon instead.
-    * When clicking on the icon, it triggers a click on the first all the color picker input fields
-    * @param
-    */
-    $('body').on('click', '.trigger-color-picker', function (evt) {
-        $('.color-picker').first().trigger('click');
-    });
+    ///**
+    //* @description Allows hiding default input type="color" element so we can use icon instead.
+    //* When clicking on the icon, it triggers a click on the first all the color picker input fields
+    //* @param
+    //*/
+    //$('body').on('click', '.trigger-color-picker', function (evt) {
+    //    $('.color-picker').first().trigger('click');
+    //});
 
     /**
     * @description Handler for updating the color from the color picker
     * @param
     */
-    $('body').on('input', '.color-picker', function (evt) {
-        color = $(evt.target).val();
-        $('.color-picker').val(color);
-        $('.trigger-color-picker').css('color', color); // color the icon so user know color has change
+    //$('body').on('input', '.color-picker', function (evt) {
+    //    color = $(evt.target).val();
+    //    $('.color-picker').val(color);
+    //    $('.trigger-color-picker').css('color', color); // color the icon so user know color has change
 
-        // If color is changed from the toolbar, we want to automatically close the toolbar after color selection.
-        // The color picker in the toolbar, will have a parent with the tooling class.
-        let toolbarParents = $(evt.target).parents('.tooling');
-        if (toolbarParents.length > 0) {
-            toolbarIsOpen = true;
-            toolbarParents.first().trigger('click');
-        }
-    });
+    //    // If color is changed from the toolbar, we want to automatically close the toolbar after color selection.
+    //    // The color picker in the toolbar, will have a parent with the tooling class.
+    //    let toolbarParents = $(evt.target).parents('.tooling');
+    //    if (toolbarParents.length > 0) {
+    //        toolbarIsOpen = true;
+    //        toolbarParents.first().trigger('click');
+    //    }
+    //});
 
     /**
     * @description Handler for updating the text
@@ -616,6 +650,10 @@ $(document).ready(function () {
         $('.trigger-color-picker').css('color', color);
     });
 
+    /**
+    * @description Sets up user current activity for displaying proper tools in tool area
+    * @param {Event} - The object to which event was triggered
+    */
     $('body').on('click', '.tool-options span', function (evt) {
         let target = $(evt.target);
 
@@ -623,6 +661,32 @@ $(document).ready(function () {
             cellOptions.setOption(target);
         } else {
             keyboardOptions.setOption(target);
+        }
+    });
+
+
+    /**
+    * @description Updates current color based on user selection
+    * @param {Event} - The object to which event was triggered
+    */
+    $('body').on('click', '.color-sample', function (evt) {
+        color = $(this).css('background-color');
+        $('.trigger-color-picker').css('color', color);
+    });
+
+
+    /**
+    * @description Toggles display of color samples while in live pixel mode
+    * @param {Event} - The object to which event was triggered
+    */
+    $(document).on("click", ".trigger-color-picker", function (e) {
+        if (!colorSamplesDisplayed) { 
+            colorSamplesDisplayed = true;
+            toolContainer.prepend(colorSamplesHtml);
+            loadColorSamples();
+        } else {
+            toolContainer.find('.color-samples').remove();
+            colorSamplesDisplayed = false;
         }
     });
 });

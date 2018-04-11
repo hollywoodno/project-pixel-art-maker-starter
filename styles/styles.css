@@ -12,16 +12,28 @@ body {
     cursor: pointer;
 }
 
+.color-sample {
+    width: 25px;
+    height: 25px;
+    border-bottom: 8px solid #eee;
+    border-radius: 0 10%;
+    background-color: #696969;
+    display: inline-block;
+}
+
+
+/* Custom Color Samples for cross-browser support */
+
 
 /* IMPORTANT: Hides all input type="color" except in the canvas builder, so we can use an icon instead of ugly default element*/
-input[type="color"]:not(#color-picker-1) {
+/*input[type="color"]:not(#color-picker-1) {
     position: absolute;
     left: -10000px;
     top: auto;
     width: 1px;
     height: 1px;
     overflow: hidden;
-}
+}*/
 
 
 .glyphicon {
